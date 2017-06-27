@@ -29,22 +29,27 @@ public class FatFractionCalculator extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Hello World!");
-                FatMask t = null;
+                Mask t = null;
                 Image i = null;
                 try {
                     i = new Image("C:\\gusto\\TestFiles\\MRI 4.5\\GUSTO_010-04035\\MRI_RESEARCH_GUSTO_RESEARCH_20140625_184729_416000\\AX_VIBE_6ECHOES_SCAPULA_OUTPUT_FP_0052");
-                    t = new FatMask(
+                    t = new Mask(
                             "C:\\gusto\\TestFiles\\Segmentation files_BAT\\010-04010_BAT.nii.gz");
                 } catch (IOException ex) {
                     System.out.println("badF");
                 }
-//                ArrayList<Coordinate> eggs = t.getMaskedVoxels();
+                //Check mask
+//                ArrayList<Coordinate> eggs = t.getVoxels();
 //                for (Coordinate c : eggs){
 //                    System.out.println(c);
 //                }
-                for (int o = 0; o < 80; o++) {
-                    System.out.println("" + i.get(40, 40, o));
-                }
+
+                // Check MRI Data
+//                for (int o = 0; o < 80; o++) {
+//                    System.out.println("" + i.get(40, 40, o));
+//                }
+                //check MRI HEader
+                System.out.println("" + i.getVoxelVolume());
                 
             }
         });

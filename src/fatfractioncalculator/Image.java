@@ -94,14 +94,139 @@ public class Image {
      * The contents of the header at the headerKey
      * @param headerKey
      * @return the value from the header
-     * @return null if invalid headerKey
+     *         null if invalid headerKey
      */
     public String getHeader(String headerKey) {
         return header.get(headerKey);
     }
     
+    /**
+     * Returns the dimensions for each MRI voxel
+     * @return {x, y, z} dimensions
+     *          null if inconsistent header contents
+     */
+    public double[] getVoxelDimensions() {
+        // Get voxel depth
+        String result = getHeader("Slice Thickness");
+        
+        // If non exisitent return null
+        if (result == null) {
+            return null;
+        }
+        
+        double depth = Double.parseDouble(result);
+        
+        // get voxel x and y 
+        result = getHeader("Pixel Spacing");
+        
+        // If non exisitent return null
+        if (result == null) {
+            return null;
+        }
+        String[] spacing = result.split("\\\\");
+        double[] ret = {Double.parseDouble(spacing[0]), 
+            Double.parseDouble(spacing[1]), depth};
+        
+        return ret;
+    }
+    
+    /**
+     * Returns the voxel volume in mm^2 (assuming that is header file units)
+     * @return voxel volume
+     *         -1 if inconsistent header file contents
+     */
+    public double getVoxelVolume() {
+        // Get the dimensions
+        double[] voxelDimens = getVoxelDimensions();
+        if (voxelDimens == null){
+            return -1;
+        }
+        
+        return voxelDimens[0] * voxelDimens[1] * voxelDimens[2];
+    }
+    
+    /**
+     * 
+     * @return the patient ID from the header file
+     *         null if inconsistent header contents
+     */
+    public String getPatientID() {
+        return getHeader("Patient ID");
+    }
+    
+    /**
+     * 
+     * @return the patient height from the header file
+     *         null if inconsistent header contents
+     */
+    public String getPatientHeight() {
+        return getHeader("Patient's Size");
+    }
+    
+    /**
+     * 
+     * @return the patient weight from the header file
+     *         null if inconsistent header contents
+     */
+    public String getPatientWeight() {
+        return getHeader("Patient's Weight");
+    }
+    
+    /**
+     * 
+     * @return the patient sex from the header file
+     *         null if inconsistent header contents
+     */
+    public String getPatientSex() {
+        return getHeader("Patient's Sex");
+    }
+    
+    /**
+     * 
+     * @return the patient age from the header file
+     *         null if inconsistent header contents
+     */
+    public String getPatientAge() {
+        return getHeader("Patient's Age");
+    }
+    
+    /**
+     * 
+     * @return the patient birthday from the header file
+     *         null if inconsistent header contents
+     */
+    public String getPatientBirthday() {
+        return getHeader("Patient's Birth Date");
+    }
+    
+    /**
+     * 
+     * @return the study instance UID from the header file
+     *         null if inconsistent header contents
+     */
+    public String getStudyUID() {
+        return getHeader("Study Instance UID");
+    }
+    
+    /**
+     * 
+     * @return the study date from the header file
+     *         null if inconsistent header contents
+     */
+    public String getStudyDate() {
+        return getHeader("Study Date");
+    }
+    
+    /**
+     * 
+     * @return the MRI strength from the header file
+     *         null if inconsistent header contents
+     */
+    public String getMRIStrength() {
+        return getHeader("Magnetic Field Strength");
+    }
+    
     //TODO
-    // Common header things and parse to ints e.g. pixel size and stuff we need to use
     // mask mode
     
     
@@ -120,7 +245,8 @@ public class Image {
             line = line.substring(11);
             // Split line into <key>: <value> and add to header hashMap
             String[] kv = line.split(": ");
-            if (kv[0].equals("---")) {
+            
+            if (kv.length < 2 || kv[0].equals("---")) {
                 continue; // Skipp useless header contents
             }
             
