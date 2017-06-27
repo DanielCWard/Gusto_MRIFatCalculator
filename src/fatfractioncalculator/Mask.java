@@ -14,7 +14,7 @@ import niftijio.NiftiVolume;
  * Fat mask files are generated in ITKSnap and saved as nii.gz files.
  * @author Daniel Ward
  */
-public class FatMask{
+public class Mask{
     
     /* Class Variables*/
     private final NiftiVolume volume; // nifti volume mask is loaded into
@@ -31,7 +31,7 @@ public class FatMask{
      * @param filePath : The path to the fatMask nii.gz file
      * @throws IOException : if the file is invalid or not found.
      */
-    public FatMask(String filePath) throws IOException{
+    public Mask(String filePath) throws IOException{
         volume = NiftiVolume.read(filePath); // Load the volume
         height = volume.data.sizeY();
         width = volume.data.sizeX();
@@ -87,7 +87,7 @@ public class FatMask{
     /**
      * @return a list of the masked coordinates
      */
-    public ArrayList<Coordinate> getMaskedVoxels(){
+    public ArrayList<Coordinate> getVoxels(){
         /* Create array list of masked pixels*/
         ArrayList<Coordinate> maskedVoxels = new ArrayList<>();
         int voxelValue;
