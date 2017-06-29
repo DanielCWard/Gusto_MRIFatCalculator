@@ -226,13 +226,6 @@ public class Image {
         return getHeader("Magnetic Field Strength");
     }
     
-    //TODO
-    // mask mode
-    /**
-     * args: bounds, 
-     * returns: max, min, mean max, percent, volume
-    */
-    
     /**
      * Collects and returns the statistics about masked voxels.
      * @require voxelMask.getShape == getShape()
@@ -244,21 +237,12 @@ public class Image {
         // Create FatVolume to populate statistics
         FatVolume statistics = new FatVolume();
         
-        System.err.println("TF up " + bounds.getUpper() + "tF lwr " + bounds.getLower());
-//        int c = 0;
         // Add each masked pixel to the statistics
         for (Coordinate coordinate : voxelMask.getVoxels()) {
             if (bounds.inBounds(get(coordinate))) {
-                statistics.addPixel(coordinate, get(coordinate));
-//                c++;
-//                if (c < 10) {
-//                    System.err.print("TF Pixel Val: " + get(coordinate) + coordinate+"\n");
-//                    System.err.flush();
-//                }
-                           
+                statistics.addPixel(coordinate, get(coordinate));      
             }
         }
-//        System.err.print("pixels in Bounds: " + c +"\n");
         return statistics;
     }
     

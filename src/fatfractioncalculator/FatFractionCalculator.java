@@ -6,7 +6,6 @@
 package fatfractioncalculator;
 
 import java.io.IOException;
-import java.util.HashMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,59 +43,9 @@ public class FatFractionCalculator extends Application {
                     System.out.println("badF");
                 }
                 Bounds bounds = new Bounds(0, 1000);
-//                System.err.println(image.get(70, 60, 42));
-                
-//                System.err.println(image.getShape());
-//                for (int k = 0; k < 128; k++) {
-//                    int sum = 0;
-//                    for (int i = 0; i < 160; i++) {
-//                        for (int j = 0; j < 136; j++) {
-//                            sum += image.get(i, j, k);
-//                        }
-//                    }
-//                    System.err.print(k + ", " + sum +"\n");
-//                }
-                
-//                for (int i = 0; i < 160; i++) {
-//                    for (int j = 0; j < 136; j++) {
-//                        System.err.print(mask.get(i, j, 55) + " ");
-////                        System.err.print(image.get(i, j, 55) + " ");
-//                    }
-//                    System.err.print("\n");
-//                }
-//                for (int i = 50; i < 53; i++) {
-//                    for (int j = 50; j < 53; j++) {
-//                        for (int k = 50; k < 53; k++) {
-//                            System.err.println(image.get(k, j, i) + ": " + i +", "+j+", "+k);
-//                        }
-//                    }
-//                }
-//                for (int i = 0; i < image.getShape().getWidth(); i++) {
-//                    for (int j = 0; j < image.getShape().getHeight(); j++) {
-//                        for (int k = 0; k < image.getShape().getDepth(); k++) {
-//                            if (image.get(i, j, k) == 505) {
-//                                System.err.println("505: " + i +", "+j+", "+k);
-//                            }
-//                        }
-//                    }
-//                }
-//                System.err.println(image.get(128, 79, 42));
-//                System.out.println(mask.getVoxels().size()); // 7185 non zero mask pixels -> good
-                System.err.println(image.getMaskedVoxelStatistics(mask, bounds));
-                //Check mask
-//                ArrayList<Coordinate> eggs = t.getVoxels();
-//                for (Coordinate c : eggs){
-//                    System.out.println(c);
-//                }
-
-                // Check MRI Data
-//                for (int o = 0; o < 80; o++) {
-//                    System.out.println("" + i.get(40, 40, o));
-//                }
-                //check MRI HEader
-//                System.out.println("" + i.getVoxelVolume());
-
-                
+                FatVolume stats = image.getMaskedVoxelStatistics(mask, bounds);
+                System.err.println(stats);
+                System.err.println("" + stats.getVolume(image.getVoxelVolume()));
             }
         });
         

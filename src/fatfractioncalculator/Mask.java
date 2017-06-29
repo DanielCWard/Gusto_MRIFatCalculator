@@ -114,38 +114,15 @@ public class Mask{
         /* Create array list of masked pixels*/
         ArrayList<Coordinate> maskedVoxels = new ArrayList<>();
         int voxelValue;
+        
         /* Iterate over all contents and get all the masked pixels */
-        int c = 0;
-//        for (int j = 0; j < height; j++) {
-//            for (int i = 0; i < width; i++){
-//                for (int k = 0; k < depth; k++) {
-//                    // Get the voxel value: 4th arg 0 seems to work
-//                    voxelValue = (int) volume.data.get(i, j, k, 0);
-//                    if (voxelValue != absent){
-//                        Coordinate voxelLocation = new Coordinate(i, j, k);
-////                        c++;
-////                        if (c < 10) {
-////                            System.err.println("masked Coord: " + voxelLocation);
-////                            System.err.flush();
-////                        }
-//                        maskedVoxels.add(voxelLocation);
-//                    }
-//                }
-//            }
-//        }
-
-        for (int k = 0; k < depth; k++) {
-            for (int j = 0; j < height; j++) {
-                for (int i = 0; i < width; i++){
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++){
+                for (int k = 0; k < depth; k++) {
                     // Get the voxel value: 4th arg 0 seems to work
                     voxelValue = (int) volume.data.get(i, j, k, 0);
                     if (voxelValue != absent){
                         Coordinate voxelLocation = new Coordinate(i, j, k);
-//                        c++;
-//                        if (c < 10) {
-//                            System.err.println("masked Coord: " + voxelLocation);
-//                            System.err.flush();
-//                        }
                         maskedVoxels.add(voxelLocation);
                     }
                 }
