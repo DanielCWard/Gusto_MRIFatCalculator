@@ -41,5 +41,15 @@ public class Bounds {
         return lower;
     }
     
+    /**
+     * 
+     * @param value value to compare
+     * @return true iff value is greater or equal to lower bound and less than
+     *         or equal to upper bound.
+     */
+    public boolean inBounds(int value) {
+        return (value >= lower && value <= upper);
+    }
+    
     
 }

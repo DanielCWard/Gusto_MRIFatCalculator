@@ -82,6 +82,32 @@ public class Mask{
     }
     
     /**
+     * Get the voxel value at x, y, z coordinates
+     * @param x
+     * @param y
+     * @param z
+     * @return 
+     * @throws IndexOutOfBoundsException
+     */
+    public int get(int x, int y, int z) throws IndexOutOfBoundsException {
+        if (x < 0 || x > width || y < 0 || y > height || z < 0 || z > depth) {
+            throw new IndexOutOfBoundsException(
+                    "Index out of bounds for image");
+        }
+        return (int) volume.data.get(x, y, z, 0);
+    }
+    
+    /**
+     * Get the voxel value at the coordinate
+     * @param coord
+     * @return
+     * @throws IndexOutOfBoundsException 
+     */
+    public int get(Coordinate coord) throws IndexOutOfBoundsException{
+        return get(coord.getX(), coord.getY(), coord.getZ());
+    }
+    
+    /**
      * @return a list of the masked coordinates
      */
     public ArrayList<Coordinate> getVoxels(){
@@ -89,13 +115,37 @@ public class Mask{
         ArrayList<Coordinate> maskedVoxels = new ArrayList<>();
         int voxelValue;
         /* Iterate over all contents and get all the masked pixels */
-        for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++){
-                for (int k = 0; k < depth; k++) {
+        int c = 0;
+//        for (int j = 0; j < height; j++) {
+//            for (int i = 0; i < width; i++){
+//                for (int k = 0; k < depth; k++) {
+//                    // Get the voxel value: 4th arg 0 seems to work
+//                    voxelValue = (int) volume.data.get(i, j, k, 0);
+//                    if (voxelValue != absent){
+//                        Coordinate voxelLocation = new Coordinate(i, j, k);
+////                        c++;
+////                        if (c < 10) {
+////                            System.err.println("masked Coord: " + voxelLocation);
+////                            System.err.flush();
+////                        }
+//                        maskedVoxels.add(voxelLocation);
+//                    }
+//                }
+//            }
+//        }
+
+        for (int k = 0; k < depth; k++) {
+            for (int j = 0; j < height; j++) {
+                for (int i = 0; i < width; i++){
                     // Get the voxel value: 4th arg 0 seems to work
                     voxelValue = (int) volume.data.get(i, j, k, 0);
                     if (voxelValue != absent){
                         Coordinate voxelLocation = new Coordinate(i, j, k);
+//                        c++;
+//                        if (c < 10) {
+//                            System.err.println("masked Coord: " + voxelLocation);
+//                            System.err.flush();
+//                        }
                         maskedVoxels.add(voxelLocation);
                     }
                 }

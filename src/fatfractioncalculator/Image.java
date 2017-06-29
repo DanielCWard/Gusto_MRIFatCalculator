@@ -33,13 +33,13 @@ public class Image {
     
     public Image(String filePath) throws IOException{
         Path[] sliceFiles = getSlicePaths(filePath);
-        DICOM dicomFile = new DICOM();
+        DICOM dicomFile;
         
         // Initialise imageList
         image = new ArrayList<>();
-        
         // Load each path into the image list
         for (Path p : sliceFiles) {
+            dicomFile = new DICOM();
             dicomFile.open(p.toString()); // open the IMA file
             image.add(dicomFile.getProcessor().duplicate());
         }
@@ -64,7 +64,7 @@ public class Image {
      * @return
      * @throws IndexOutOfBoundsException 
      */
-    public int get(int x, int y, int z) throws IndexOutOfBoundsException{
+    public int get(int x, int y, int z) throws IndexOutOfBoundsException {
         if (x < 0 || x > width || y < 0 || y > height || z < 0 || z > depth) {
             throw new IndexOutOfBoundsException(
                     "Index out of bounds for image");
@@ -244,13 +244,21 @@ public class Image {
         // Create FatVolume to populate statistics
         FatVolume statistics = new FatVolume();
         
+        System.err.println("TF up " + bounds.getUpper() + "tF lwr " + bounds.getLower());
+//        int c = 0;
         // Add each masked pixel to the statistics
         for (Coordinate coordinate : voxelMask.getVoxels()) {
-            if (get(coordinate) <= bounds.getUpper() && 
-                    get(coordinate) >= bounds.getLower()) {
+            if (bounds.inBounds(get(coordinate))) {
                 statistics.addPixel(coordinate, get(coordinate));
+//                c++;
+//                if (c < 10) {
+//                    System.err.print("TF Pixel Val: " + get(coordinate) + coordinate+"\n");
+//                    System.err.flush();
+//                }
+                           
             }
         }
+//        System.err.print("pixels in Bounds: " + c +"\n");
         return statistics;
     }
     
@@ -306,5 +314,13 @@ public class Image {
         
         Arrays.sort(slicePaths);
         return slicePaths;
+    }
+    
+    /**
+     * 
+     * @return shape of image
+     */
+    public Shape getShape() {
+        return new Shape(width, height, depth);
     }
 }
