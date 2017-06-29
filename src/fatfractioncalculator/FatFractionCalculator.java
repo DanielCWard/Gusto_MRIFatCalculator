@@ -6,6 +6,7 @@
 package fatfractioncalculator;
 
 import java.io.IOException;
+import java.util.HashMap;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,27 +30,39 @@ public class FatFractionCalculator extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Hello World!");
-                Mask t = null;
-                Image i = null;
-                try {
-                    i = new Image("C:\\gusto\\TestFiles\\MRI 4.5\\GUSTO_010-04035\\MRI_RESEARCH_GUSTO_RESEARCH_20140625_184729_416000\\AX_VIBE_6ECHOES_SCAPULA_OUTPUT_FP_0052");
-                    t = new Mask(
-                            "C:\\gusto\\TestFiles\\Segmentation files_BAT\\010-04010_BAT.nii.gz");
-                } catch (IOException ex) {
-                    System.out.println("badF");
-                }
-                //Check mask
-//                ArrayList<Coordinate> eggs = t.getVoxels();
-//                for (Coordinate c : eggs){
-//                    System.out.println(c);
+//                Mask t = null;
+//                Image i = null;
+//                try {
+//                    i = new Image("C:\\gusto\\TestFiles\\MRI 4.5\\GUSTO_010-04035\\MRI_RESEARCH_GUSTO_RESEARCH_20140625_184729_416000\\AX_VIBE_6ECHOES_SCAPULA_OUTPUT_FP_0052");
+//                    t = new Mask(
+//                            "C:\\gusto\\TestFiles\\Segmentation files_BAT\\010-04010_BAT.nii.gz");
+//                } catch (IOException ex) {
+//                    System.out.println("badF");
 //                }
+//                //Check mask
+////                ArrayList<Coordinate> eggs = t.getVoxels();
+////                for (Coordinate c : eggs){
+////                    System.out.println(c);
+////                }
+//
+//                // Check MRI Data
+////                for (int o = 0; o < 80; o++) {
+////                    System.out.println("" + i.get(40, 40, o));
+////                }
+//                //check MRI HEader
+//                System.out.println("" + i.getVoxelVolume());
 
-                // Check MRI Data
-//                for (int o = 0; o < 80; o++) {
-//                    System.out.println("" + i.get(40, 40, o));
-//                }
-                //check MRI HEader
-                System.out.println("" + i.getVoxelVolume());
+                HashMap<Integer, Integer> h = new HashMap<>();
+                Object a = h.get(5);
+                int b = 0;
+                if (a == null) {
+                    b = -1;
+                } else {
+                    b = (int)a;
+                }
+                System.out.println("" + b);
+                h.put(5, 83);
+                System.out.println("" + h.get(5));
                 
             }
         });

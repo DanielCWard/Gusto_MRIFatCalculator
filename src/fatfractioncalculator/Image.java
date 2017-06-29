@@ -228,7 +228,10 @@ public class Image {
     
     //TODO
     // mask mode
-    
+    /**
+     * args: bounds, 
+     * returns: max, min, mean max, percent, volume
+    */
     
     /**
      * Reads and populates the header informations
