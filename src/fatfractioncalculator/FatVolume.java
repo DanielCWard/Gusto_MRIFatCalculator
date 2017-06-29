@@ -161,4 +161,19 @@ public class FatVolume {
         // Value divided by 10 for some reason from previous version
         return (sum / maxValues.size()) / 10;
     }
+    
+    /**
+     * 
+     * @return string representation of volume statistics
+     */
+    @Override
+    public String toString() {
+        String string = "Voxel count: " + getVoxelCount() + "\n";
+        string += "Absolute minimum: " + getAbsoluteMin() + "\n";
+        string += "Mean minimum across slices: " + getMeanMin() + "\n";
+        string += "Absolute maximum: " + getAbsoluteMax() + "\n";
+        string += "Mean maximum across slices: " + getMeanMax() + "\n";
+        
+        return string;
+    }
 }

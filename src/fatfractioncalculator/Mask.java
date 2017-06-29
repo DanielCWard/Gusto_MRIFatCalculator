@@ -66,22 +66,19 @@ public class Mask{
      * Returns the shape of the fatmask volume as rows, columns, depth
      * @return shape of the fatmask volume
      */
-    public int[] getShape() {
-        int[] shape = {height, width, depth};
+    public Shape getShape() {
+        Shape shape = new Shape(width, height, depth);
         return shape;
     }
     
     /**
      * Compares two shapes
-     * @param shape, int[3] of height, width, depth
+     * @param shape shape to compare
      * @return True iff height, width, depth of shape 
      *         are equal to those of this instance
      */
-    public boolean checkShape(int[] shape) {
-        return shape.length == 3 && 
-                shape[0] == height && 
-                shape[1] == width && 
-                shape[2] == depth;
+    public boolean checkShape(Shape shape) {
+        return shape == getShape();
     }
     
     /**

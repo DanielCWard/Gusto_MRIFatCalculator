@@ -105,7 +105,7 @@ public class Image {
      * @return {x, y, z} dimensions
      *          null if inconsistent header contents
      */
-    public double[] getVoxelDimensions() {
+    public Shape getVoxelDimensions() {
         // Get voxel depth
         String result = getHeader("Slice Thickness");
         
@@ -114,7 +114,7 @@ public class Image {
             return null;
         }
         
-        double depth = Double.parseDouble(result);
+        double depthDimension = Double.parseDouble(result);
         
         // get voxel x and y 
         result = getHeader("Pixel Spacing");
@@ -124,10 +124,10 @@ public class Image {
             return null;
         }
         String[] spacing = result.split("\\\\");
-        double[] ret = {Double.parseDouble(spacing[0]), 
-            Double.parseDouble(spacing[1]), depth};
+        Shape shape = new Shape(Double.parseDouble(spacing[0]), 
+            Double.parseDouble(spacing[1]), depthDimension);
         
-        return ret;
+        return shape;
     }
     
     /**
@@ -137,12 +137,12 @@ public class Image {
      */
     public double getVoxelVolume() {
         // Get the dimensions
-        double[] voxelDimens = getVoxelDimensions();
+        Shape voxelDimens = getVoxelDimensions();
         if (voxelDimens == null){
             return -1;
         }
         
-        return voxelDimens[0] * voxelDimens[1] * voxelDimens[2];
+        return voxelDimens.getVolume();
     }
     
     /**
@@ -233,11 +233,24 @@ public class Image {
      * returns: max, min, mean max, percent, volume
     */
     
+    /**
+     * Collects and returns the statistics about masked voxels.
+     * @require voxelMask.getShape == getShape()
+     * @param voxelMask mask for the image
+     * @param bounds
+     * @return FatVolume statistics
+     */
     public FatVolume getMaskedVoxelStatistics(Mask voxelMask, Bounds bounds) {
         // Create FatVolume to populate statistics
         FatVolume statistics = new FatVolume();
         
         // Add each masked pixel to the statistics
+        for (Coordinate coordinate : voxelMask.getVoxels()) {
+            if (get(coordinate) <= bounds.getUpper() && 
+                    get(coordinate) >= bounds.getLower()) {
+                statistics.addPixel(coordinate, get(coordinate));
+            }
+        }
         return statistics;
     }
     

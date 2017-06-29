@@ -30,39 +30,32 @@ public class FatFractionCalculator extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println("Hello World!");
-//                Mask t = null;
-//                Image i = null;
-//                try {
-//                    i = new Image("C:\\gusto\\TestFiles\\MRI 4.5\\GUSTO_010-04035\\MRI_RESEARCH_GUSTO_RESEARCH_20140625_184729_416000\\AX_VIBE_6ECHOES_SCAPULA_OUTPUT_FP_0052");
-//                    t = new Mask(
+                Mask mask = null;
+                Image image = null;
+                try {
+                    image = new Image("C:\\gusto\\TestFiles\\fileOptionsVersion130417\\6YR_Files/GUSTO_6YR_020-66006/GUSTO_GUSTO_RESEARCH_20170107_095236_121000/AX_VIBE_6ECHOES_BAT_LL2_SMALL_RR_FF_0103");
+//                    image = new Image("C:\\gusto\\TestFiles\\MRI 4.5\\GUSTO_010-04035\\MRI_RESEARCH_GUSTO_RESEARCH_20140625_184729_416000\\AX_VIBE_6ECHOES_SCAPULA_OUTPUT_FP_0052");
+                    mask = new Mask("C:\\gusto\\TestFiles\\fileOptionsVersion130417\\NiGzFiles\\BAT6\\020-66006_BAT6.nii.gz");
+//                    mask = new Mask(
 //                            "C:\\gusto\\TestFiles\\Segmentation files_BAT\\010-04010_BAT.nii.gz");
-//                } catch (IOException ex) {
-//                    System.out.println("badF");
+                } catch (IOException ex) {
+                    System.out.println("badF");
+                }
+                Bounds bounds = new Bounds(20, 100);
+                System.out.println(image.getMaskedVoxelStatistics(mask, bounds));
+                //Check mask
+//                ArrayList<Coordinate> eggs = t.getVoxels();
+//                for (Coordinate c : eggs){
+//                    System.out.println(c);
 //                }
-//                //Check mask
-////                ArrayList<Coordinate> eggs = t.getVoxels();
-////                for (Coordinate c : eggs){
-////                    System.out.println(c);
-////                }
-//
-//                // Check MRI Data
-////                for (int o = 0; o < 80; o++) {
-////                    System.out.println("" + i.get(40, 40, o));
-////                }
-//                //check MRI HEader
+
+                // Check MRI Data
+//                for (int o = 0; o < 80; o++) {
+//                    System.out.println("" + i.get(40, 40, o));
+//                }
+                //check MRI HEader
 //                System.out.println("" + i.getVoxelVolume());
 
-                HashMap<Integer, Integer> h = new HashMap<>();
-                Object a = h.get(5);
-                int b = 0;
-                if (a == null) {
-                    b = -1;
-                } else {
-                    b = (int)a;
-                }
-                System.out.println("" + b);
-                h.put(5, 83);
-                System.out.println("" + h.get(5));
                 
             }
         });

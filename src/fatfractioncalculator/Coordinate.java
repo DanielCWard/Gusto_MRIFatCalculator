@@ -78,7 +78,7 @@ public class Coordinate {
      * @return hashcode of the coordinate
      */
     @Override
-    public int hashCode(){
+    public int hashCode() {
         final int prime = 31; // an odd base prime
         int result = prime * x;
         result += prime * y;
