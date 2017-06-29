@@ -233,6 +233,14 @@ public class Image {
      * returns: max, min, mean max, percent, volume
     */
     
+    public FatVolume getMaskedVoxelStatistics(Mask voxelMask, Bounds bounds) {
+        // Create FatVolume to populate statistics
+        FatVolume statistics = new FatVolume();
+        
+        // Add each masked pixel to the statistics
+        return statistics;
+    }
+    
     /**
      * Reads and populates the header informations
      * @param filePath of an IMA file to read header info
