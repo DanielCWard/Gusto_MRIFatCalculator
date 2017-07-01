@@ -29,9 +29,13 @@ public class Image {
     private final int height; // image height
     private final int width; // image width
     private final int depth; // image depth
+    // The contents of the header file
     private HashMap<String, String> header;
+    private final String path; //Path the MRI was loaded from
+    
     
     public Image(String filePath) throws IOException{
+        this.path = filePath;
         Path[] sliceFiles = getSlicePaths(filePath);
         DICOM dicomFile;
         
@@ -143,6 +147,14 @@ public class Image {
         }
         
         return voxelDimens.getVolume();
+    }
+    
+    /**
+     * 
+     * @return string of path to this MRI file
+     */
+    public String getPath() {
+        return path;
     }
     
     /**

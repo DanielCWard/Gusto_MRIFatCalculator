@@ -6,7 +6,10 @@
 package fatfractioncalculator;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Map;
+import niftijio.NiftiHeader;
 import niftijio.NiftiVolume;
 
 /**
@@ -18,13 +21,13 @@ public class Mask{
     
     /* Class Variables*/
     private final NiftiVolume volume; // nifti volume mask is loaded into
+    private final NiftiHeader header; // the header of the niftiVolue
     private final int height; // Height of the volume
     private final int width; // Width of the volume
     private final int depth; // Depth of the volume
-    // Value of a pixel if it is present in the mask
-    private final int present = 1;
-    // Value of a pixel if it is absent in the mask
-    private final int absent = 0;
+    private final int present; // value of a mask voxel indicating presence
+    private final int absent; // value of a mask voxel indicating absence
+    private final String path; // Path to where this mask was loaded from
     
     /**
      * Initialises the class by loading the given file.
@@ -32,10 +35,34 @@ public class Mask{
      * @throws IOException : if the file is invalid or not found.
      */
     public Mask(String filePath) throws IOException{
+        this.path = filePath;
+        this.absent = 0;
+        this.present = 1;
         volume = NiftiVolume.read(filePath); // Load the volume
+        header = NiftiHeader.read(filePath);
         height = volume.data.sizeY();
         width = volume.data.sizeX();
         depth = volume.data.sizeZ();
+    }
+    
+    public Map<String, String> getHeader() {
+        return header.info();
+    }
+    
+    /**
+     * 
+     * @return String of the Path to this Mask File
+     */
+    public String getPath() {
+        return path;
+    }
+    
+    /**
+     * 
+     * @return Filename of the mask
+     */
+    public String getFilename() {
+        return Paths.get(path).getFileName().toString();
     }
     
     /**
