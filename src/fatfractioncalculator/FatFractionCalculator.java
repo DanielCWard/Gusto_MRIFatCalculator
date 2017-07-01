@@ -42,11 +42,12 @@ public class FatFractionCalculator extends Application {
 //                    csv.close();
                     Mask mask = null;
                     mask = new Mask("C:\\gusto\\TestFiles\\fileOptionsVersion130417\\NiGzFiles\\BAT6\\020-66006_BAT6.nii.gz");
-                    MaskMriMatcher matcher = new MaskMriMatcher("GUSTO_6YR_", 
+                    MaskMriMatcher matcher = new MaskMriMatcher("C:\\gusto\\TestFiles\\fileOptionsVersion130417\\6YR_Files", 
+                            "GUSTO_6YR_", 
                         "GUSTO_GUSTO_RESEARCH_20160403_, GUSTO_GUSTO_RESEARCH_2", 
                         "AX_VIBE_6ECHOES_SCAPULA_LL2_RR_FF_////, AX_VIBE_6ECHOES_SCAPULA_LL2_FF_////, AX_VIBE_6ECHOES_BAT_LL2_SMALL_RR_FF_////, AX_VIBE_6ECHOES_BAT2_LL2_SMALL_FF_////", 
                         "/////////_BAT6.nii.gz");
-                    System.out.println(matcher.getPatientNumberFromMask(mask));
+                    System.out.println(matcher.getImageFromMask(mask));
 //                    System.out.println("Hello World!");
 //                    Mask mask = null;
 //                    Image image = null;

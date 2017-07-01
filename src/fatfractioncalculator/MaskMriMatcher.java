@@ -5,7 +5,10 @@
  */
 package fatfractioncalculator;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,19 +38,24 @@ public class MaskMriMatcher {
     private final String[] imageTypeTemplate;
     // list of acceptable segmentation file, in order of priority, highest first
     private final String[] segmentationFileTemplate;
+    //Mri parent directory
+    private final String mriParentDirectory;
     
     /**
      * Initialise the class with the file templates
      * @require All arguments are not null
+     * @param MriParentPath
      * @param subDirectoryTemplate
      * @param studyDirectoryTemplate
      * @param imageTypeTemplate
      * @param segmentationFileTemplate 
      */
-    public MaskMriMatcher(List<String> subDirectoryTemplate, 
+    public MaskMriMatcher(String MriParentPath, 
+            List<String> subDirectoryTemplate, 
             List<String> studyDirectoryTemplate, 
             List<String> imageTypeTemplate, 
             List<String> segmentationFileTemplate) {
+        mriParentDirectory = MriParentPath;
         this.subDirectoryTemplate = subDirectoryTemplate.toArray(
                 new String[subDirectoryTemplate.size()]);
         this.studyDirectoryTemplate = studyDirectoryTemplate.toArray(
@@ -61,15 +69,18 @@ public class MaskMriMatcher {
     /**
      * Initialise the class with the file templates
      * @require All arguments are not null
+     * @param MriParentPath
      * @param subDirectoryTemplate
      * @param studyDirectoryTemplate
      * @param imageTypeTemplate
      * @param segmentationFileTemplate 
      */
-    public MaskMriMatcher(String[] subDirectoryTemplate, 
+    public MaskMriMatcher(String MriParentPath, 
+            String[] subDirectoryTemplate, 
             String[] studyDirectoryTemplate, 
             String[] imageTypeTemplate, 
             String[] segmentationFileTemplate) {
+        mriParentDirectory = MriParentPath;
         this.subDirectoryTemplate = subDirectoryTemplate;
         this.studyDirectoryTemplate = studyDirectoryTemplate;
         this.imageTypeTemplate = imageTypeTemplate;
@@ -80,15 +91,18 @@ public class MaskMriMatcher {
      * Initialise the class with the file templates
      * Takes the string lists of templates separated by ", "
      * @require All arguments are not null
+     * @param MriParentPath
      * @param subDirectoryTemplates
      * @param studyDirectoryTemplates
      * @param imageTypeTemplates
      * @param segmentationFileTemplates
      */
-    public MaskMriMatcher(String subDirectoryTemplates, 
+    public MaskMriMatcher(String MriParentPath, 
+            String subDirectoryTemplates, 
             String studyDirectoryTemplates, 
             String imageTypeTemplates, 
             String segmentationFileTemplates) {
+        mriParentDirectory = MriParentPath;
         this.subDirectoryTemplate = 
                 subDirectoryTemplates.replace(" ", "").split(",");
         this.studyDirectoryTemplate = 
@@ -139,4 +153,96 @@ public class MaskMriMatcher {
         return patientNumber;
     }
     
+    public String getImageFromMask(Mask mask) {
+        String subDir = getMriSubDirectory(getPatientNumberFromMask(mask));
+        return getStudyDirectory(Paths.get(mriParentDirectory, subDir).toString());
+        
+        //TODO: Return the image instance
+    }
+    
+    /**
+     * Finds the Patient MRI directory
+     * @param patientNumber
+     * @return 
+     */
+    private String getMriSubDirectory(String patientNumber) {
+        String[] mriParentFiles = getDirectoriesIn(mriParentDirectory);
+        
+        for (String subFile : mriParentFiles) {
+            for (String subjectDir : subDirectoryTemplate) {
+                if (subFile.contains(patientNumber) && 
+                        subFile.contains(subjectDir)) {
+                    return subFile;
+                }
+            }
+        }
+        return ""; // No matches
+    }
+    
+    /**
+     * Finds the correct study directory according to the templates
+     * @param patientDirectory
+     * @return "" if not matching directory found otherwise the studyDirectory
+     */
+    private String getStudyDirectory(String patientDirectoryPath) {
+        String[] studyDirectories = getDirectoriesIn(patientDirectoryPath);
+        
+        for (String subFile : studyDirectories) {
+            for (String studyDir : studyDirectoryTemplate) {
+                if (subFile.contains(studyDir)) {
+                    System.out.println("Found study Folder: " + subFile);
+                    return subFile;
+                }
+            }
+        }
+        return ""; // No matches
+        
+    }
+    
+    private String getImageDirectory(String studyDirectoryPath) {
+        return "";
+        // TODO
+    }
+    
+    /**
+     * Returns a list of paths which are the paths to the files
+     * within the given folder. Paths are sorted lexographically.
+     * @param filePath directory to get files' paths
+     * @return paths to each of the files
+     */
+    private String[] getFilesIn(String filePath){
+        // Get a list of files in the given folder
+        File file = new File(filePath);
+        String[] containedFiles = file.list(
+                new FilenameFilter() {
+            @Override
+            public boolean accept(File current, String name) {
+                return new File(current, name).isFile();
+            }
+        }
+        );
+        
+        return containedFiles;
+    }
+    
+    /**
+     * Returns a list of paths which are the paths to the directories
+     * within the given folder. Paths are sorted lexographically.
+     * @param filePath directory to get files' paths
+     * @return paths to each of the files
+     */
+    private String[] getDirectoriesIn(String filePath){
+        // Get a list of files in the given folder
+        File file = new File(filePath);
+        String[] containedFiles = file.list(
+                new FilenameFilter() {
+            @Override
+            public boolean accept(File current, String name) {
+                return new File(current, name).isDirectory();
+            }
+        }
+        );
+        
+        return containedFiles;
+    }
 }
