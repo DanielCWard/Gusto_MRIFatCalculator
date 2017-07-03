@@ -319,4 +319,19 @@ public class Image {
     public Shape getShape() {
         return new Shape(width, height, depth);
     }
+    
+    /**
+     * 
+     * @return string representation of Image
+     */
+    @Override
+    public String toString() {
+        String string = "MRI Image\n";
+        string += "Loaded from: " + getPath() + "\n";
+        string += "Dimensions: " + getShape().toString() + "\n";
+        string += "Patient ID: " + getPatientID() + "\n";
+        string += "Study Date: " + getStudyDate() + "\n";
+        
+        return string;
+    }
 }
