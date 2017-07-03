@@ -1,0 +1,17 @@
+- Unit tests []
+	- For image and mask loading use example file and hard code expected results []
+	- For fileMatcher create file structure of example directories and successfull directory can contain sample file []
+- GUI []
+	- Model []
+	- View []
+	- Controller []
+- Proper file matcher implementation []
+- Probably more comprehensive commenting []
+	- Fix up class documentation []
+	- Remove the auto licencing code at the top of each class []
+- Proper inheritance / override functions []
+	- Classes which require toString, HashCode etc []
+- Config file []
+	- Implement loading and saving of config file []
+		- Something so that the client can save file templates and things for common runs and just load those.
+
