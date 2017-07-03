@@ -14,4 +14,16 @@
 - Config file []
 	- Implement loading and saving of config file []
 		- Something so that the client can save file templates and things for common runs and just load those.
+- UI []
+	- Load and run single image []
+		- Manually select Mask, Image Directory and CSV output file and run just for that
+	- Run Single image []
+		- Select single mask folder, and CSV out and program will auto locate Image directory and run
+	- Run all images []
+		- Runs for all mask files in a given folder. Auto find matching MRI's etc
+- Speed and efficancy []
+	- Implement threading for run all images mode []
+		- Note the CSV writer class already uses mutexes to ensure writing rows is thread safe
+	- Use a linear algebra library for Mask and Images []
+		- Masking and counting / summing of voxels will be significantly faster. see: ND4J for possible library
 
