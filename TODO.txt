@@ -8,7 +8,7 @@
 - Proper file matcher implementation []
 - Probably more comprehensive commenting []
 	- Fix up class documentation []
-	- Remove the auto licencing code at the top of each class []
+	- Remove the auto licencing code at the top of each class [#]
 - Proper inheritance / override functions []
 	- Classes which require toString, HashCode etc []
 - Config file []

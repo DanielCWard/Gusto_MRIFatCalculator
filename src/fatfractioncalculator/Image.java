@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatfractioncalculator;
 
 import ij.plugin.DICOM;
@@ -304,8 +299,8 @@ public class Image {
         Path[] slicePaths = new Path[containedFiles.length];
         int count = 0;
         for (String f: containedFiles) {
-            Path path = Paths.get(filePath, f);
-            slicePaths[count++] = path;
+            Path containedPath = Paths.get(filePath, f);
+            slicePaths[count++] = containedPath;
         }
         
         Arrays.sort(slicePaths);
