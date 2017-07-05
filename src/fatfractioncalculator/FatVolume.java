@@ -159,6 +159,20 @@ public class FatVolume {
     
     /**
      * 
+     * @return The Average Pixel Value
+     */
+    public double getAverageValue() {
+        double average = 0;
+        for (int i : pixelValues) {
+            average += i;
+        }
+        
+        // Divide by 1000 because previous version did so
+        return (average / 1000) / pixelValues.size();
+    }
+    
+    /**
+     * 
      * @return string representation of volume statistics
      */
     @Override

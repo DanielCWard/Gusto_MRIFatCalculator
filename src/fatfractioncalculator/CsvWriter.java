@@ -15,7 +15,8 @@ public class CsvWriter {
     /* Class variables*/
     private final FileWriter fileWriter; // The file to write to
     private final Path filePath;
-    private final Mutex mutex; // Mutex so that writing can only happen at the one time
+    // Mutex so that writing can only happen at the one time
+    private final Mutex mutex;
     private final String delimiter = ", ";
     
     /**
@@ -69,7 +70,7 @@ public class CsvWriter {
      * @param <T> any type with toString() method
      * @throws IOException filePath does not exist
      */
-    public <T> CsvWriter(String filePath, ArrayList<T> firstRow) 
+    public CsvWriter(String filePath, ArrayList<?> firstRow) 
             throws IOException {
         this.filePath = Paths.get(filePath);        
         //Open the file
@@ -83,10 +84,9 @@ public class CsvWriter {
     /**
      * Writes a row to the file. Each item's toString representation
      * will be written to the file and separated by a delimiter.
-     * @param <T>
      * @param row 
      */
-    public final <T> void writeRow(ArrayList<T> row) {
+    public final void writeRow(ArrayList<?> row) {
         while (true) {
             try {
                 mutex.acquire();
@@ -96,8 +96,8 @@ public class CsvWriter {
         }
         
         try {
-            for (T rowItem : row) {
-                fileWriter.append(rowItem.toString());
+            for (int i = 0; i < row.size(); i++) {
+                fileWriter.append(row.get(i).toString());
                 fileWriter.append(delimiter);
             }
             fileWriter.append("\n");

@@ -51,6 +51,10 @@ public class FatFractionCalculatorController {
         // Assign the Handlers to the buttons
         view.setSinglePatientManualButtonHandler(
                 new ManualSinglePatientEventActionHandler());
+        view.setSetCsvFileButtonHandler(
+                new SelectCSVFileEventActionHandler());
+        view.setStartCalculationButtonHandler(
+                new StartEventActionHandler());
     }
     
     /**
@@ -173,9 +177,6 @@ public class FatFractionCalculatorController {
             
             view.setAllTemplatesEditable(false);
             
-            // Get and check bounds
-            getViewSetModelBounds();
-            
             // Get the Segmentation file from the user
             File segmentationFile = getFileFromUser(
                     "Select a segmentation file");
@@ -203,6 +204,52 @@ public class FatFractionCalculatorController {
             model.setSegmentationFilePaths(segmentationPaths);
             
             model.setImagePath(imageDirectory.toString());
+        }
+    }
+    
+    /**
+     * EventHandler class for the Select CSV Button
+     */
+    private class SelectCSVFileEventActionHandler 
+    implements EventHandler<ActionEvent> {
+    	/**
+         * Override handle to Start button click
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            
+            // Get the Csv file from the user
+            File csvFile = getSaveCsvFileFromUser(
+                    "Create a csv file");
+            if (csvFile == null) {
+                view.displayErrorAlert("Invalid csv file!", 
+                        "Invalid csv file!",
+                        "Please save/create a csv file");
+                return;
+            }
+            
+            model.setCsvPath(csvFile.toString());
+        }
+    }
+    
+    /**
+     * EventHandler class for the Start Button
+     */
+    private class StartEventActionHandler 
+    implements EventHandler<ActionEvent> {
+    	/**
+         * Override handle to Start button click
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            
+            getViewSetModelBounds();
+            
+            if (!model.runCalculation()) {
+                view.displayErrorAlert("Calculation Error!", 
+                        "Calculation Error!",
+                        "Something went wrong");
+            }
         }
     }
 }

@@ -7,8 +7,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -283,7 +285,7 @@ public class Image {
      * @param filePath directory to get files' paths
      * @return paths to each of the files
      */
-    private Path[] getSlicePaths(String filePath){
+    private static Path[] getSlicePaths(String filePath){
         // Get a list of files in the given folder
         File file = new File(filePath);
         String[] containedFiles = file.list(
@@ -328,5 +330,31 @@ public class Image {
         string += "Study Date: " + getStudyDate() + "\n";
         
         return string;
+    }
+    
+    /**
+     * 
+     * @param directoryPath directory to test
+     * @return true iff the directory is an image directory
+     */
+    public static boolean isValidImageDirectory(String directoryPath) {
+        Path[] directoryContents = getSlicePaths(directoryPath);
+        for (Path p : directoryContents) {
+            if (!p.toString().endsWith(".IMA")) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * 
+     * @return Formatted String of the time of last modification for the folder
+     */
+    public String getFolderTimeStamp() {
+        File file = new File(path);
+        Date dateMod = new Date(file.lastModified());
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");            
+        return format.format(dateMod);
     }
 }
