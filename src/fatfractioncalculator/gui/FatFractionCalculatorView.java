@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fatfractioncalculator.gui;
 
 import fatfractioncalculator.*;
@@ -160,17 +155,23 @@ public class FatFractionCalculatorView {
      */
     private void populateGridWithSliders() {
         // Add BAT Min at column 0, row 1
+        BATMinSlider = new Slider();
         grid.add(createThresholdSlider(BATMinSlider, BATMinSliderLabel), 0, 1);
         // Add BAT Max at column 1, row 1
+        BATMaxSlider = new Slider();
         grid.add(createThresholdSlider(BATMaxSlider, BATMaxSliderLabel), 1, 1);
         // Add WAT Min at column 0, row 2
+        WATMinSlider = new Slider();
         grid.add(createThresholdSlider(WATMinSlider, WATMinSliderLabel), 0, 2);
         // Add WAT Max at column 1, row 2
+        WATMaxSlider = new Slider();
         grid.add(createThresholdSlider(WATMaxSlider, WATMaxSliderLabel), 1, 2);
         // Add TIAF Min at column 0, row 3
+        TIAFMinSlider = new Slider();
         grid.add(
                 createThresholdSlider(TIAFMinSlider, TIAFMinSliderLabel), 0, 3);
         // Add TIAF Max at column 1, row 3
+        TIAFMaxSlider = new Slider();
         grid.add(
                 createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel), 1, 3);
     }
@@ -286,12 +287,17 @@ public class FatFractionCalculatorView {
         vBox.setAlignment(Pos.CENTER);
         
         // Templates
+        subjectDirectoryTemplate = new TextField();
         HBox subjectDirectory = createTemplateTextField(
                 subjectDirectoryTemplate, subjectDirectoryTemplateLabel);
+        
+        studyDirectoryTemplate = new TextField();
         HBox studyDirectory = createTemplateTextField(
                 studyDirectoryTemplate, studyDirectoryTemplateLabel);
+        imageDirectoryTemplate = new TextField();
         HBox imageDirectory = createTemplateTextField(
                 imageDirectoryTemplate, imageDirectoryTemplateLabel);
+        segmentationFileTemplate = new TextField();
         HBox segmentationFile = createTemplateTextField(
                 segmentationFileTemplate, segmentationFileTemplateLabel);
         
@@ -324,7 +330,6 @@ public class FatFractionCalculatorView {
         Label fieldLabel = new Label(label);
         fieldLabel.setFont(labelFont);
         
-        textField = new TextField();
     	textField.setEditable(true);
     	textField.setAlignment(Pos.CENTER_LEFT);
     	textField.setFocusTraversable(false);
@@ -339,7 +344,7 @@ public class FatFractionCalculatorView {
     
     /**
      * Creates and returns a Vertical box which contains the provided slider 
-     * which is instansiated with range [0, 100] and snap to ticks of 5.
+     * which is set to range [0, 100] and snap to ticks of 5.
      * @param slider slider to set
      * @param label label of the slider
      * @return the vertical box containing the slider and its label
@@ -351,7 +356,6 @@ public class FatFractionCalculatorView {
     	VBox.setVgrow(vBox, Priority.ALWAYS);
         
         // Init slider to have range [0, 100] with spacing 5
-        slider = new Slider();
         slider.setMin(0);
         slider.setMax(100);
         slider.setMajorTickUnit(5);
@@ -421,18 +425,18 @@ public class FatFractionCalculatorView {
     }
     
     /**
-     * Sets the value of the TAIF min threshold
+     * Sets the value of the TIAF min threshold
      * @param value the value to set the slider to
      */
-    public void setTAIFMinSliderValue(double value) {
+    public void setTIAFMinSliderValue(double value) {
         TIAFMinSlider.setValue(value);
     }
     
     /**
-     * Sets the value of the TAIF max threshold
+     * Sets the value of the TIAF max threshold
      * @param value the value to set the slider to
      */
-    public void setTAIFMaxSliderValue(double value) {
+    public void setTIAFMaxSliderValue(double value) {
         TIAFMaxSlider.setValue(value);
     }
     

@@ -14,8 +14,13 @@ public class Bounds {
      * Set the class variables/boundary values
      * @param lower lower bound
      * @param upper upper bound
+     * @throws InvalidBoundsException if !(upper > lower)
      */
-    public Bounds(int lower, int upper) {
+    public Bounds(int lower, int upper) throws InvalidBoundsException {
+        if (!(upper > lower)) {
+            throw new InvalidBoundsException(
+                    "Upper limit is not larger than lower limit!");
+        }
         this.lower = lower;
         this.upper = upper;
     }
@@ -44,5 +49,13 @@ public class Bounds {
      */
     public boolean inBounds(int value) {
         return (value >= lower && value <= upper);
+    }
+    
+    /**
+     * 
+     * @return a copy of the bounds instance
+     */
+    public Bounds copy() {
+        return new Bounds(getLower(), getUpper());
     }
 }
