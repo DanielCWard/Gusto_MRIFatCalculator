@@ -8,6 +8,7 @@
     - Package title Label inside HBox with some regions beside/pad it so it is centered across the multiple grid columns [#]
     - Package CSV button inside HBox with some regions beside/pad it so it is centered across the multiple grid columns [#]
     - Package start button inside HBox with some regions beside/pad it so it is centered across the multiple grid columns [#]
+    - Fix the sliders so that they are all always equally sized []
 	- Controller []
     - For each of the button handlers for run type reset all the set paths etc []
     - Have thread safe (mutex protected) increment progress bar handler []

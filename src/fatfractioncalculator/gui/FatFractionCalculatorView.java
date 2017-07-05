@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -67,15 +68,16 @@ public class FatFractionCalculatorView {
     private final Font titleFont = Font.font("SanSerif", FontWeight.BOLD, 30);
     private final Font labelFont = Font.font("SanSerif", 22);
     private final Font buttonFont = Font.font("SanSerif", 18);
+    private final Font textFieldFont = Font.font("SanSerif", 14);
     
     // Dimensions
-    private final int height = 750;
-    private final int width = 1000;
+    private final int height = 1000;
+    private final int width = 1500;
     
     // Buttons
     private Button singlePatientManualButton;
-    private final String singlePatientManualButtonLabel = "Single Patient\nManual MRI"
-            + " Selection";
+    private final String singlePatientManualButtonLabel = "Single Patient\n"
+            + "Manual MRI Selection";
     private Button singlePatientAutomaticButton;
     private final String singlePatientAutomaticButtonLabel = "Single Patient\n"
             + "Automatic MRI Selection";
@@ -90,6 +92,20 @@ public class FatFractionCalculatorView {
     // Calculation ProgressBar
     private ProgressBar calculationProgressBar;
     private final String calculationProgressBarLabel = "Calculation Progress";
+    
+    // Template Fields
+    private TextField subjectDirectoryTemplate;
+    private final String subjectDirectoryTemplateLabel = "Subject directory "
+            + "template";
+    private TextField studyDirectoryTemplate;
+    private final String studyDirectoryTemplateLabel = "Study directory "
+            + "template";
+    private TextField imageDirectoryTemplate;
+    private final String imageDirectoryTemplateLabel = "MRI directory "
+            + "template";
+    private TextField segmentationFileTemplate;
+    private final String segmentationFileTemplateLabel = "Segmentation File "
+            + "template";
     
     /**
      * Init the View with the model provided
@@ -108,6 +124,7 @@ public class FatFractionCalculatorView {
         populateGridWithTitle();
         populateGridWithSliders();
         populateGridWithButtons();
+        populateGridWithTemplateFields();
         populateGridWithProgressBar();
         
         // Set the scene
@@ -199,6 +216,9 @@ public class FatFractionCalculatorView {
                 singlePatientAutomaticButton, multiPatientAutomaticButton, 
                 pad1);
         
+        // Add it all to row 4 of the grid spanning all 2 columns and 1 row
+        grid.add(hBox, 0, 4, 2, 1);
+        
         // Select CSV Button
         setCsvFileButton = createButton(
                 setCsvFileButtonLabel);
@@ -207,11 +227,11 @@ public class FatFractionCalculatorView {
         startCalculationButton = createButton(
                 startCalculationButtonLabel);
         
-        vBox.getChildren().addAll(hBox, setCsvFileButton, 
+        vBox.getChildren().addAll(setCsvFileButton, 
                 startCalculationButton);
         
-        // Add it all to row 4 of the grid spanning all 2 columns and 1 row
-        grid.add(vBox, 0, 4, 2, 1);
+        // Add it all to row 6 of the grid spanning all 2 columns and 1 row
+        grid.add(vBox, 0, 6, 2, 1);
     }
     
     /**
@@ -249,8 +269,72 @@ public class FatFractionCalculatorView {
         
         vBox.getChildren().addAll(hBox, calculationProgressBar);
         
-        // Add it all to row 5 of the grid spanning all 2 columns and 1 row
+        // Add it all to row 7 of the grid spanning all 2 columns and 1 row
+        grid.add(vBox, 0, 7, 2, 1);
+    }
+    
+    /**
+     * Populates the grid with the template fields.
+     */
+    private void populateGridWithTemplateFields() {
+        // Package fields and labels in VBox
+        VBox vBox = new VBox();
+        vBox.setSpacing(5); // Set spacing of 5
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+        vBox.setAlignment(Pos.CENTER);
+        
+        // Templates
+        HBox subjectDirectory = createTemplateTextField(
+                subjectDirectoryTemplate, subjectDirectoryTemplateLabel);
+        HBox studyDirectory = createTemplateTextField(
+                studyDirectoryTemplate, studyDirectoryTemplateLabel);
+        HBox imageDirectory = createTemplateTextField(
+                imageDirectoryTemplate, imageDirectoryTemplateLabel);
+        HBox segmentationFile = createTemplateTextField(
+                segmentationFileTemplate, segmentationFileTemplateLabel);
+        
+        vBox.getChildren().addAll(subjectDirectory, studyDirectory, 
+                imageDirectory, segmentationFile);
+        
+        // Add to grid at column 0 row 5
         grid.add(vBox, 0, 5, 2, 1);
+    }
+    
+    /**
+     * Creates an HBox filled with a text field and its label
+     * @param textField
+     * @param label
+     * @return the HBox
+     */
+    private HBox createTemplateTextField(TextField textField, String label) {
+        // Package field and label in HBox to fit across 2 columns
+        HBox hBox = new HBox();
+        hBox.setSpacing(5); // Set spacing of 5
+        hBox.setPadding(new Insets(10, 10, 10, 10));
+    	HBox.setHgrow(hBox, Priority.ALWAYS);
+        hBox.setMinWidth(width * 0.7);
+        
+        // Pad between the text field and the label
+        Region pad0 = new Region();
+        HBox.setHgrow(pad0, Priority.SOMETIMES);
+        
+        // Init label with title and set to label font
+        Label fieldLabel = new Label(label);
+        fieldLabel.setFont(labelFont);
+        
+        textField = new TextField();
+    	textField.setEditable(true);
+    	textField.setAlignment(Pos.CENTER_LEFT);
+    	textField.setFocusTraversable(false);
+    	textField.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    	textField.setMinSize(500, Double.MIN_VALUE);
+//    	textField.setFont(textFieldFont);
+    	textField.setPrefSize(500, 30);
+        
+        hBox.getChildren().addAll(fieldLabel, pad0, textField);
+        
+    	return hBox;
     }
     
     /**
