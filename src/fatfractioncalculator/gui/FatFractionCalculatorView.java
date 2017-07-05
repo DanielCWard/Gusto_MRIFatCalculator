@@ -9,11 +9,13 @@ import fatfractioncalculator.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -57,13 +59,35 @@ public class FatFractionCalculatorView {
     private final String TIAFMaxSliderLabel = "Total Interscapular and "
             + "Auxillary Fat Max (%)";
     
+    //Title
+    private final String title = "Fat fraction and volume calculation program";
+    
     // Fonts
-    private final Font titleFont = Font.font("SanSerif", FontWeight.BOLD, 25);
-    private final Font labelFont = Font.font("SanSerif", 18);
+    private final Font titleFont = Font.font("SanSerif", FontWeight.BOLD, 30);
+    private final Font labelFont = Font.font("SanSerif", 22);
+    private final Font buttonFont = Font.font("SanSerif", 18);
     
     // Dimensions
     private final int height = 650;
     private final int width = 1000;
+    
+    // Buttons
+    private Button singlePatientManualButton;
+    private String singlePatientManualButtonLabel = "Single Patient\nManual MRI"
+            + " Selection";
+    private Button singlePatientAutomaticButton;
+    private String singlePatientAutomaticButtonLabel = "Single Patient\n"
+            + "Automatic MRI Selection";
+    private Button multiPatientAutomaticButton;
+    private String multiPatientAutomaticButtonLabel = "Multiple Patient\n"
+            + "Automatic MRI Selection";
+    private Button setCsvFileButton;
+    private String setCsvFileButtonLabel = "Set CSV File";
+    private Button startCalculationButton;
+    private String startCalculationButtonLabel = "Start Calculation";
+    
+    
+    
     
     /**
      * Init the View with the model provided
@@ -79,10 +103,35 @@ public class FatFractionCalculatorView {
         grid.setAlignment(Pos.TOP_CENTER);
         
         // Fill the Grid
+        populateGridWithTitle();
         populateGridWithSliders();
+        populateGridWithButtons();
         
         // Set the scene
         scene = new Scene(grid, height, width);
+    }
+    
+    /**
+     * Populates the grid with the title
+     */
+    private void populateGridWithTitle() {
+        // Package title in HBox to fit across 2 columns
+        HBox hBox = new HBox();
+        hBox.setSpacing(5); // Set spacing of 5
+        hBox.setPadding(new Insets(10, 10, 10, 10));
+    	HBox.setHgrow(hBox, Priority.ALWAYS);
+        
+        Region pad0 = new Region();
+    	Region pad1 = new Region();
+        HBox.setHgrow(pad0, Priority.ALWAYS);
+        HBox.setHgrow(pad1, Priority.ALWAYS);
+        
+        Label titleLabel = new Label(title);
+        titleLabel.setAlignment(Pos.CENTER);
+        titleLabel.setFont(titleFont);
+        
+        hBox.getChildren().addAll(pad0, titleLabel, pad1);
+        grid.add(hBox, 0, 0, 2, 1);
     }
     
     /**
@@ -90,18 +139,80 @@ public class FatFractionCalculatorView {
      */
     private void populateGridWithSliders() {
         // Add BAT Min at column 0, row 1
-        grid.add(getThresholdSlider(BATMinSlider, BATMinSliderLabel), 0, 1);
+        grid.add(createThresholdSlider(BATMinSlider, BATMinSliderLabel), 0, 1);
         // Add BAT Max at column 1, row 1
-        grid.add(getThresholdSlider(BATMaxSlider, BATMaxSliderLabel), 1, 1);
+        grid.add(createThresholdSlider(BATMaxSlider, BATMaxSliderLabel), 1, 1);
         // Add WAT Min at column 0, row 2
-        grid.add(getThresholdSlider(WATMinSlider, WATMinSliderLabel), 0, 2);
+        grid.add(createThresholdSlider(WATMinSlider, WATMinSliderLabel), 0, 2);
         // Add WAT Max at column 1, row 2
-        grid.add(getThresholdSlider(WATMaxSlider, WATMaxSliderLabel), 1, 2);
+        grid.add(createThresholdSlider(WATMaxSlider, WATMaxSliderLabel), 1, 2);
         // Add TIAF Min at column 0, row 3
-        grid.add(getThresholdSlider(TIAFMinSlider, TIAFMinSliderLabel), 0, 3);
+        grid.add(
+                createThresholdSlider(TIAFMinSlider, TIAFMinSliderLabel), 0, 3);
         // Add TIAF Max at column 1, row 3
-        grid.add(getThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel), 1, 3);
+        grid.add(
+                createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel), 1, 3);
     }
+    
+    /**
+     * Populates the grid with the following buttons:
+     *      single manual process mode
+     *      single automatic process mode
+     *      multiple automatic process mode
+     *      select CSV file
+     *      Start calculation 
+     */
+    private void populateGridWithButtons() {
+        // Package buttons in HBox to fit three across 2 columns
+        HBox hBox = new HBox();
+        hBox.setSpacing(5); // Set spacing of 5
+        hBox.setPadding(new Insets(10, 10, 10, 10));
+    	HBox.setHgrow(hBox, Priority.ALWAYS);
+        
+        VBox vBox = new VBox();
+        vBox.setSpacing(5); // Set spacing of 5
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+        
+        
+        // Single patient manual MRI selection button
+        singlePatientManualButton = createButton(
+                singlePatientManualButtonLabel);
+        
+        // Single patient Automatic MRI selection button
+        singlePatientAutomaticButton = createButton(
+                singlePatientAutomaticButtonLabel);
+        
+        // Multi patient Automatic MRI selection button
+        multiPatientAutomaticButton = createButton(
+                multiPatientAutomaticButtonLabel);
+        
+        Region pad0 = new Region();
+    	Region pad1 = new Region();
+        HBox.setHgrow(pad0, Priority.ALWAYS);
+        HBox.setHgrow(pad1, Priority.ALWAYS);
+        
+        hBox.getChildren().addAll(pad0, singlePatientManualButton, 
+                singlePatientAutomaticButton, multiPatientAutomaticButton, 
+                pad1);
+        
+        // Select CSV Button
+        setCsvFileButton = createButton(
+                setCsvFileButtonLabel);
+        
+        // Start Calculation Button
+        startCalculationButton = createButton(
+                startCalculationButtonLabel);
+        
+        vBox.getChildren().addAll(hBox, setCsvFileButton, 
+                startCalculationButton);
+        
+        // Add it all to row 4 of the grid spanning all 2 columns and 1 row
+        grid.add(vBox, 0, 4, 2, 1);
+        
+        
+    }
+    
     /**
      * Creates and returns a Vertical box which contains the provided slider 
      * which is instansiated with range [0, 100] and snap to ticks of 5.
@@ -109,7 +220,7 @@ public class FatFractionCalculatorView {
      * @param label label of the slider
      * @return the vertical box containing the slider and its label
      */
-    private VBox getThresholdSlider(Slider slider, String label) {
+    private VBox createThresholdSlider(Slider slider, String label) {
         VBox vBox = new VBox();
         vBox.setSpacing(5); // Set spacing of 5
         vBox.setPadding(new Insets(10, 10, 10, 10));
@@ -137,6 +248,20 @@ public class FatFractionCalculatorView {
         vBox.setAlignment(Pos.CENTER);
         
         return vBox;
+    }
+    
+    /**
+     * Creates a button of minHeight 30 and provided text
+     * @param buttonText button text
+     * @return the created button
+     */
+    private Button createButton(String buttonText) {
+        Button button = new Button(buttonText);
+    	button.setFont(buttonFont);
+    	button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    	button.setMinSize(Double.MIN_VALUE, 30);
+    	button.setFocusTraversable(false);
+        return button;
     }
     
     /**
