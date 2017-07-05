@@ -4,6 +4,7 @@
 - GUI []
 	- Model []
 	- View []
+    - Have change listeners to the sliders and set the titles to show the value of the slider and it can also be an int input field []
 	- Controller []
 - Proper file matcher implementation []
 - Probably more comprehensive commenting []

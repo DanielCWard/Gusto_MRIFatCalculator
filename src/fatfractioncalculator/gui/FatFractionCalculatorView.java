@@ -65,22 +65,50 @@ public class FatFractionCalculatorView {
     private final int height = 650;
     private final int width = 1000;
     
+    /**
+     * Init the View with the model provided
+     * @param model 
+     */
     public FatFractionCalculatorView(FatFractionCalculatorModel model) {
         this.model = model;
         
         // Initalise the view grid to pack everything into        
         grid = new GridPane();
         grid.setPrefSize(height, width);
-        grid.setMinSize(height, width);        
+        grid.setMinSize(height, width);   
+        grid.setAlignment(Pos.TOP_CENTER);
         
-        VBox box = getThresholdSlider(BATMinSlider, BATMinSliderLabel);//TIAFMaxSliderLabel);
-        
-        grid.add(box, 1, 1, 1, 1);
+        // Fill the Grid
+        populateGridWithSliders();
         
         // Set the scene
         scene = new Scene(grid, height, width);
     }
     
+    /**
+     * Populates the grid with the BAT, WAT and TIAF sliders
+     */
+    private void populateGridWithSliders() {
+        // Add BAT Min at column 0, row 1
+        grid.add(getThresholdSlider(BATMinSlider, BATMinSliderLabel), 0, 1);
+        // Add BAT Max at column 1, row 1
+        grid.add(getThresholdSlider(BATMaxSlider, BATMaxSliderLabel), 1, 1);
+        // Add WAT Min at column 0, row 2
+        grid.add(getThresholdSlider(WATMinSlider, WATMinSliderLabel), 0, 2);
+        // Add WAT Max at column 1, row 2
+        grid.add(getThresholdSlider(WATMaxSlider, WATMaxSliderLabel), 1, 2);
+        // Add TIAF Min at column 0, row 3
+        grid.add(getThresholdSlider(TIAFMinSlider, TIAFMinSliderLabel), 0, 3);
+        // Add TIAF Max at column 1, row 3
+        grid.add(getThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel), 1, 3);
+    }
+    /**
+     * Creates and returns a Vertical box which contains the provided slider 
+     * which is instansiated with range [0, 100] and snap to ticks of 5.
+     * @param slider slider to set
+     * @param label label of the slider
+     * @return the vertical box containing the slider and its label
+     */
     private VBox getThresholdSlider(Slider slider, String label) {
         VBox vBox = new VBox();
         vBox.setSpacing(5); // Set spacing of 5
@@ -96,6 +124,7 @@ public class FatFractionCalculatorView {
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
         slider.setMinWidth(100);
+        slider.setSnapToTicks(true);
         
         // Init label with title and set to label font
         Label sliderLabel = new Label(label);
