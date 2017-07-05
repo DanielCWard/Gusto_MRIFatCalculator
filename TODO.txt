@@ -26,4 +26,7 @@
 		- Note the CSV writer class already uses mutexes to ensure writing rows is thread safe
 	- Use a linear algebra library for Mask and Images []
 		- Masking and counting / summing of voxels will be significantly faster. see: ND4J for possible library
+- CSVWriter Class []
+	- Add check for fileName/path ending in ".csv" if not there, add it automatically in init function []
+	
 
