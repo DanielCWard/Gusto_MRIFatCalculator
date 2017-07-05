@@ -523,6 +523,86 @@ public class FatFractionCalculatorView {
     
     /**
      * 
+     * @return the value of the BAT min threshold
+     */
+    public double getBATMinSliderValue() {
+        return BATMinSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the BAT max threshold
+     */
+    public double getBATMaxSliderValue() {
+        return BATMaxSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the WAT min threshold
+     */
+    public double getWATMinSliderValue() {
+        return WATMinSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the WAT max threshold
+     */
+    public double getWATMaxSliderValue() {
+        return WATMaxSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the TIAF min threshold
+     */
+    public double getTIAFMinSliderValue() {
+        return TIAFMinSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the TIAF max threshold
+     */
+    public double getTIAFMaxSliderValue() {
+        return TIAFMaxSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the subjectDirectoryTemplate
+     */
+    public String getSubjectDirectoryTemplate() {
+        return subjectDirectoryTemplate.getText();
+    }
+    
+    /**
+     * 
+     * @return the studyDirectoryTemplate
+     */
+    public String getStudyDirectoryTemplate() {
+        return studyDirectoryTemplate.getText();
+    }
+    
+    /**
+     * 
+     * @return the imageDirectoryTemplate
+     */
+    public String getImageDirectoryTemplate() {
+        return imageDirectoryTemplate.getText();
+    }
+    
+    /**
+     * 
+     * @return the segmentationFileTemplate
+     */
+    public String getSegmentationFileTemplate() {
+        return segmentationFileTemplate.getText();
+    }
+    
+    /**
+     * 
      * @return the Scene of the view
      */
     public Scene getScene() {
