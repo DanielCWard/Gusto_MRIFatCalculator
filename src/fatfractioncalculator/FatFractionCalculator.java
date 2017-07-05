@@ -19,7 +19,7 @@ public class FatFractionCalculator extends Application {
         FatFractionCalculatorModel model = new FatFractionCalculatorModel();
         FatFractionCalculatorView view = new FatFractionCalculatorView(model);
         
-        new FatFractionCalculatorController(model, view);
+        new FatFractionCalculatorController(model, view, primaryStage);
         
         Scene scene = view.getScene();
         

@@ -1,6 +1,15 @@
 package fatfractioncalculator.gui;
 
 import fatfractioncalculator.Bounds;
+import fatfractioncalculator.InvalidBoundsException;
+import java.io.File;
+import java.util.ArrayList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
 /**
  *
@@ -11,13 +20,13 @@ public class FatFractionCalculatorController {
     /* Class Variables */
     FatFractionCalculatorModel model; // The model
     FatFractionCalculatorView view; // The view
+    Stage stage;
     
     public FatFractionCalculatorController(FatFractionCalculatorModel model, 
-            FatFractionCalculatorView view) {
+            FatFractionCalculatorView view, Stage stage) {
         this.model = model;
         this.view = view;
-        
-        System.out.print("" + model.getSubjectDirectoryTemplate());
+        this.stage = stage;
         
         // Set up the GUI
         // Set default templates
@@ -38,5 +47,162 @@ public class FatFractionCalculatorController {
         bounds = model.getTIAFBounds();
         view.setTIAFMinSliderValue(bounds.getLower());
         view.setTIAFMaxSliderValue(bounds.getUpper());
+        
+        // Assign the Handlers to the buttons
+        view.setSinglePatientManualButtonHandler(
+                new ManualSinglePatientEventActionHandler());
+    }
+    
+    /**
+     * Gets the BAT, WAT and TIAF bounds. Checks if they are valid and sets
+     * the model accordingly. If bounds are not valid then an error is displayed
+     */
+    private void getViewSetModelBounds() {
+        Bounds BATBounds;
+        Bounds WATBounds;
+        Bounds TIAFBounds;
+        // BAT Bounds
+        try {
+            BATBounds = new Bounds(view.getBATMinSliderValue(), 
+                    view.getBATMaxSliderValue());
+        } catch (InvalidBoundsException ex) {
+            view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
+                    "BAT Max is not greater than BAT Min.");
+            return;
+        }
+        
+        // WAT Bounds
+        try {
+            WATBounds = new Bounds(view.getWATMinSliderValue(), 
+                    view.getWATMaxSliderValue());
+        } catch (InvalidBoundsException ex) {
+            view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
+                    "WAT Max is not greater than WAT Min.");
+            return;
+        }
+        
+        // TIAF Bounds
+        try {
+            TIAFBounds = new Bounds(view.getTIAFMinSliderValue(), 
+                    view.getTIAFMaxSliderValue());
+        } catch (InvalidBoundsException ex) {
+            view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
+                    "TIAF Max is not greater than TIAF Min.");
+            return;
+        }
+        
+        // Bounds are all good from here
+        model.setBATBounds(BATBounds);
+        model.setWATBounds(WATBounds);
+        model.setTIAFBounds(TIAFBounds);
+    }
+    
+    /**
+     * Returns the file chosen by the user
+     * @param dialogHeader headerText to be displayed in the popup
+     * @return file chosen by user
+     */
+    private File getFileFromUser(String dialogHeader) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(dialogHeader);
+        return fileChooser.showOpenDialog(stage);
+    }
+    
+    /**
+     * Returns the file of the directory chosen by the user
+     * @param dialogHeader headerText to be displayed in the popup
+     * @return file of Directory chosen by user
+     */
+    private File getDirectoryFromUser(String dialogHeader) {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle(dialogHeader);
+        return directoryChooser.showDialog(stage);
+    }
+    
+    /**
+     * Returns the file of the directory created by the user
+     * @param dialogHeader headerText to be displayed in the popup
+     * @return file of Directory chosen by user
+     */
+    private File getSaveCsvFileFromUser(String dialogHeader) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(dialogHeader);
+        fileChooser.getExtensionFilters().add(
+                new ExtensionFilter("Csv Files", "*.csv"));
+        File csvFile = fileChooser.showSaveDialog(stage);
+        
+        if (csvFile != null && !csvFile.toString().endsWith(".csv")) {
+            csvFile = new File(csvFile.toString() + ".csv");
+        }
+        
+        return csvFile;
+    }
+    
+    /**
+     * EventHandler class for the manual single patient event button
+     */
+    private class ManualSinglePatientEventActionHandler 
+    implements EventHandler<ActionEvent> {
+    	/**
+         * Override handle to manual single patient button click
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            
+            /*
+            - Reset Model (Function - in model) -- Might not be needed
+            - Grey out / set templates to not applicable
+            - Check all bounds (Function)
+            - Get segmentation file from user (Function)
+            - get image Directory from user (Function)
+            - run model (Function) - this is done in the start button handler
+            */
+            
+            // Reset the model
+            model.reset();
+            
+            // Set all the template fields to NA and disable editing
+            view.setSubjectDirectoryTemplate(
+                    "Not required for manual image selection");
+            view.setStudyDirectoryTemplate(
+                    "Not required for manual image selection");
+            view.setImageDirectoryTemplate(
+                    "Not required for manual image selection");
+            view.setSegmentationFileTemplate(
+                    "Not required for manual image selection");
+            
+            view.setAllTemplatesEditable(false);
+            
+            // Get and check bounds
+            getViewSetModelBounds();
+            
+            // Get the Segmentation file from the user
+            File segmentationFile = getFileFromUser(
+                    "Select a segmentation file");
+            if (segmentationFile == null) {
+                view.displayErrorAlert("Invalid segmentation file!", 
+                        "Invalid segmentation file!",
+                        "Please select a segmenation file ('.nii.gz')");
+                return;
+            }
+            
+            // Get the image Directory from the user
+            File imageDirectory = getDirectoryFromUser(
+                    "Select an image folder");
+            if (imageDirectory == null) {
+                view.displayErrorAlert("Invalid MRI folder!", 
+                        "Invalid MRI folder!",
+                        "Please select a MRI folder");
+                return;
+            }
+            
+            // Add the image directory and the segmentation Paths to model
+            // so it is ready to run after setting CSV file
+            ArrayList<String> segmentationPaths = new ArrayList<>();
+            segmentationPaths.add(segmentationFile.toString());
+            model.setSegmentationFilePaths(segmentationPaths);
+            
+            model.setImagePath(imageDirectory.toString());
+        }
     }
 }

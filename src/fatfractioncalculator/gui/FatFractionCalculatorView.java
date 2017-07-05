@@ -473,6 +473,17 @@ public class FatFractionCalculatorView {
     }
     
     /**
+     * Sets the editing permissions of all template fields
+     * @param allowed editing permissions
+     */
+    public void setAllTemplatesEditable(boolean allowed) {
+        subjectDirectoryTemplate.setEditable(allowed);
+        studyDirectoryTemplate.setEditable(allowed);
+        imageDirectoryTemplate.setEditable(allowed);
+        segmentationFileTemplate.setEditable(allowed);
+    }
+    
+    /**
      * Sets the click handler for the singlePatientManualButton
      * @param handler handler to assign to the button
      */
@@ -529,48 +540,48 @@ public class FatFractionCalculatorView {
      * 
      * @return the value of the BAT min threshold
      */
-    public double getBATMinSliderValue() {
-        return BATMinSlider.getValue();
+    public int getBATMinSliderValue() {
+        return (int) BATMinSlider.getValue();
     }
     
     /**
      * 
      * @return the value of the BAT max threshold
      */
-    public double getBATMaxSliderValue() {
-        return BATMaxSlider.getValue();
+    public int getBATMaxSliderValue() {
+        return (int) BATMaxSlider.getValue();
     }
     
     /**
      * 
      * @return the value of the WAT min threshold
      */
-    public double getWATMinSliderValue() {
-        return WATMinSlider.getValue();
+    public int getWATMinSliderValue() {
+        return (int) WATMinSlider.getValue();
     }
     
     /**
      * 
      * @return the value of the WAT max threshold
      */
-    public double getWATMaxSliderValue() {
-        return WATMaxSlider.getValue();
+    public int getWATMaxSliderValue() {
+        return (int) WATMaxSlider.getValue();
     }
     
     /**
      * 
      * @return the value of the TIAF min threshold
      */
-    public double getTIAFMinSliderValue() {
-        return TIAFMinSlider.getValue();
+    public int getTIAFMinSliderValue() {
+        return (int) TIAFMinSlider.getValue();
     }
     
     /**
      * 
      * @return the value of the TIAF max threshold
      */
-    public double getTIAFMaxSliderValue() {
-        return TIAFMaxSlider.getValue();
+    public int getTIAFMaxSliderValue() {
+        return (int) TIAFMaxSlider.getValue();
     }
     
     /**
@@ -611,5 +622,41 @@ public class FatFractionCalculatorView {
      */
     public Scene getScene() {
         return scene;
+    }
+    
+    /**
+     * Displays a popup to notify the user of an error
+     * @param title, title of error
+     * @param header, header of error
+     * @param content, content of error
+     */
+    public void displayErrorAlert(String title, String header, 
+    		String content) {
+//    	Alert alert = new Alert(AlertType.ERROR);
+//    	alert.setTitle(title);
+//    	alert.setHeaderText(header);
+//    	alert.setContentText(content);
+//
+//    	alert.showAndWait();
+        System.err.println("Error Popup: " + title + "\n" + header + 
+                "\n" + content);
+    }
+    
+    /**
+     * Displays a popup to notify the user of information
+     * @param title, title of information
+     * @param header, header of information
+     * @param content, content of information
+     */
+    public void displayInfoAlert(String title, String header, 
+    		String content) {
+//    	Alert alert = new Alert(AlertType.INFORMATION);
+//    	alert.setTitle(title);
+//    	alert.setHeaderText(header);
+//    	alert.setContentText(content);
+//
+//    	alert.showAndWait();
+        System.err.println("Error Popup: " + title + "\n" + header + 
+                "\n" + content);
     }
 }

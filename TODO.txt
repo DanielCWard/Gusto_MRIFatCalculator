@@ -9,6 +9,7 @@
     - Package CSV button inside HBox with some regions beside/pad it so it is centered across the multiple grid columns [#]
     - Package start button inside HBox with some regions beside/pad it so it is centered across the multiple grid columns [#]
     - Fix the sliders so that they are all always equally sized []
+    - Update java in netbeans to get JavaFX alert and implement popups []
 	- Controller []
     - For each of the button handlers for run type reset all the set paths etc []
     - Have thread safe (mutex protected) increment progress bar handler []
@@ -35,5 +36,7 @@
 		- Masking and counting / summing of voxels will be significantly faster. see: ND4J for possible library
 - CSVWriter Class []
 	- Add check for fileName/path ending in ".csv" if not there, add it automatically in init function []
+- JAVA version []
+  - Update Java in netbeans and fix the lack of getOrDefault() in Image class []
 	
 
