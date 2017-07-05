@@ -6,6 +6,8 @@
 package fatfractioncalculator.gui;
 
 import fatfractioncalculator.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -68,7 +70,6 @@ public class FatFractionCalculatorView {
     private final Font titleFont = Font.font("SanSerif", FontWeight.BOLD, 30);
     private final Font labelFont = Font.font("SanSerif", 22);
     private final Font buttonFont = Font.font("SanSerif", 18);
-    private final Font textFieldFont = Font.font("SanSerif", 14);
     
     // Dimensions
     private final int height = 1000;
@@ -257,8 +258,8 @@ public class FatFractionCalculatorView {
         
         // Create progess bar and set to 0% progress
         calculationProgressBar = new ProgressBar();
-        calculationProgressBar.setProgress(0F);
         calculationProgressBar.setMinWidth(width * 0.7);
+        setProgressBarProgress(0F);
         
         // Create label for the progress Bar
         Label progressBarLabel = new Label(calculationProgressBarLabel);
@@ -329,7 +330,6 @@ public class FatFractionCalculatorView {
     	textField.setFocusTraversable(false);
     	textField.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     	textField.setMinSize(500, Double.MIN_VALUE);
-//    	textField.setFont(textFieldFont);
     	textField.setPrefSize(500, 30);
         
         hBox.getChildren().addAll(fieldLabel, pad0, textField);
@@ -389,14 +389,143 @@ public class FatFractionCalculatorView {
     }
     
     /**
+     * Sets the value of the BAT min threshold
+     * @param value the value to set the slider to
+     */
+    public void setBATMinSliderValue(double value) {
+        BATMinSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the BAT max threshold
+     * @param value the value to set the slider to
+     */
+    public void setBATMaxSliderValue(double value) {
+        BATMaxSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the WAT min threshold
+     * @param value the value to set the slider to
+     */
+    public void setWATMinSliderValue(double value) {
+        WATMinSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the WAT max threshold
+     * @param value the value to set the slider to
+     */
+    public void setWATMaxSliderValue(double value) {
+        WATMaxSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the TAIF min threshold
+     * @param value the value to set the slider to
+     */
+    public void setTAIFMinSliderValue(double value) {
+        TIAFMinSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the TAIF max threshold
+     * @param value the value to set the slider to
+     */
+    public void setTAIFMaxSliderValue(double value) {
+        TIAFMaxSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the template of the subjectDirectory template
+     * @param template the template to set
+     */
+    public void setSubjectDirectoryTemplate(String template) {
+        subjectDirectoryTemplate.setText(template);
+    }
+    
+    /**
+     * Sets the template of the study directory template
+     * @param template the template to set
+     */
+    public void setStudyDirectoryTemplate(String template) {
+        studyDirectoryTemplate.setText(template);
+    }
+    
+    /**
+     * Sets the template of the image directory template
+     * @param template the template to set
+     */
+    public void setImageDirectoryTemplate(String template) {
+        imageDirectoryTemplate.setText(template);
+    }
+    
+    /**
+     * Sets the template of the segmenation file template
+     * @param template the template to set
+     */
+    public void setSegmentationFileTemplate(String template) {
+        segmentationFileTemplate.setText(template);
+    }
+    
+    /**
+     * Sets the click handler for the singlePatientManualButton
+     * @param handler handler to assign to the button
+     */
+    public void setSinglePatientManualButtonHandler(
+            EventHandler<ActionEvent> handler) {
+        singlePatientManualButton.setOnAction(handler);
+    }
+    
+    /**
+     * Sets the click handler for the singlePatientAutomaticButton
+     * @param handler handler to assign to the button
+     */
+    public void setSinglePatientAutomaticButtonHandler(
+            EventHandler<ActionEvent> handler) {
+        singlePatientAutomaticButton.setOnAction(handler);
+    }
+    
+    /**
+     * Sets the click handler for the singlePatientAutomaticButton
+     * @param handler handler to assign to the button
+     */
+    public void setMultiPatientAutomaticButtonHandler(
+            EventHandler<ActionEvent> handler) {
+        multiPatientAutomaticButton.setOnAction(handler);
+    }
+    
+    /**
+     * Sets the click handler for the setCsvFileButton
+     * @param handler handler to assign to the button
+     */
+    public void setSetCsvFileButtonHandler(
+            EventHandler<ActionEvent> handler) {
+        setCsvFileButton.setOnAction(handler);
+    }
+    
+    /**
+     * Sets the click handler for the startCalculationButton
+     * @param handler handler to assign to the button
+     */
+    public void setStartCalculationButtonHandler(
+            EventHandler<ActionEvent> handler) {
+        startCalculationButton.setOnAction(handler);
+    }
+    
+    /**
+     * Sets the calculation progress bar progress
+     * @param progress value to set the progress bar to
+     */
+    public void setProgressBarProgress(float progress) {
+        calculationProgressBar.setProgress(progress);
+    }
+    
+    /**
      * 
      * @return the Scene of the view
      */
     public Scene getScene() {
         return scene;
     }
-    
-    
-    
-    
 }
