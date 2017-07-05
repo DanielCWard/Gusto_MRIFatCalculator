@@ -11,6 +11,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -68,26 +69,27 @@ public class FatFractionCalculatorView {
     private final Font buttonFont = Font.font("SanSerif", 18);
     
     // Dimensions
-    private final int height = 650;
+    private final int height = 750;
     private final int width = 1000;
     
     // Buttons
     private Button singlePatientManualButton;
-    private String singlePatientManualButtonLabel = "Single Patient\nManual MRI"
+    private final String singlePatientManualButtonLabel = "Single Patient\nManual MRI"
             + " Selection";
     private Button singlePatientAutomaticButton;
-    private String singlePatientAutomaticButtonLabel = "Single Patient\n"
+    private final String singlePatientAutomaticButtonLabel = "Single Patient\n"
             + "Automatic MRI Selection";
     private Button multiPatientAutomaticButton;
-    private String multiPatientAutomaticButtonLabel = "Multiple Patient\n"
+    private final String multiPatientAutomaticButtonLabel = "Multiple Patient\n"
             + "Automatic MRI Selection";
     private Button setCsvFileButton;
-    private String setCsvFileButtonLabel = "Set CSV File";
+    private final String setCsvFileButtonLabel = "Set CSV File";
     private Button startCalculationButton;
-    private String startCalculationButtonLabel = "Start Calculation";
+    private final String startCalculationButtonLabel = "Start Calculation";
     
-    
-    
+    // Calculation ProgressBar
+    private ProgressBar calculationProgressBar;
+    private final String calculationProgressBarLabel = "Calculation Progress";
     
     /**
      * Init the View with the model provided
@@ -106,6 +108,7 @@ public class FatFractionCalculatorView {
         populateGridWithTitle();
         populateGridWithSliders();
         populateGridWithButtons();
+        populateGridWithProgressBar();
         
         // Set the scene
         scene = new Scene(grid, height, width);
@@ -209,8 +212,45 @@ public class FatFractionCalculatorView {
         
         // Add it all to row 4 of the grid spanning all 2 columns and 1 row
         grid.add(vBox, 0, 4, 2, 1);
+    }
+    
+    /**
+     * Populates the grid with a progress bar
+     */
+    private void populateGridWithProgressBar() {
+        // Package buttons in HBox to fit three across 2 columns
+        HBox hBox = new HBox();
+        hBox.setSpacing(5); // Set spacing of 5
+        hBox.setPadding(new Insets(10, 10, 10, 10));
+    	HBox.setHgrow(hBox, Priority.ALWAYS);
         
+        VBox vBox = new VBox();
+        vBox.setSpacing(5); // Set spacing of 5
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+        vBox.setAlignment(Pos.CENTER);
         
+        Region pad0 = new Region();
+    	Region pad1 = new Region();
+        HBox.setHgrow(pad0, Priority.ALWAYS);
+        HBox.setHgrow(pad1, Priority.ALWAYS);
+        
+        // Create progess bar and set to 0% progress
+        calculationProgressBar = new ProgressBar();
+        calculationProgressBar.setProgress(0F);
+        calculationProgressBar.setMinWidth(width * 0.7);
+        
+        // Create label for the progress Bar
+        Label progressBarLabel = new Label(calculationProgressBarLabel);
+        progressBarLabel.setFont(labelFont);
+        
+        hBox.getChildren().addAll(pad0, progressBarLabel, 
+                pad1);
+        
+        vBox.getChildren().addAll(hBox, calculationProgressBar);
+        
+        // Add it all to row 5 of the grid spanning all 2 columns and 1 row
+        grid.add(vBox, 0, 5, 2, 1);
     }
     
     /**
@@ -251,7 +291,7 @@ public class FatFractionCalculatorView {
     }
     
     /**
-     * Creates a button of minHeight 30 and provided text
+     * Creates a button of minHeight 60 and provided text
      * @param buttonText button text
      * @return the created button
      */
@@ -259,7 +299,7 @@ public class FatFractionCalculatorView {
         Button button = new Button(buttonText);
     	button.setFont(buttonFont);
     	button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-    	button.setMinSize(Double.MIN_VALUE, 30);
+    	button.setMinSize(Double.MIN_VALUE, 60);
     	button.setFocusTraversable(false);
         return button;
     }
