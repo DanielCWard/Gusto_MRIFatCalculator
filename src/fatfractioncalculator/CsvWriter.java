@@ -67,7 +67,6 @@ public class CsvWriter {
      * Initalises a CSV Writer. Creates and opens the file.
      * @param filePath path to save the file at
      * @param firstRow The first / title row of the file
-     * @param <T> any type with toString() method
      * @throws IOException filePath does not exist
      */
     public CsvWriter(String filePath, ArrayList<?> firstRow) 

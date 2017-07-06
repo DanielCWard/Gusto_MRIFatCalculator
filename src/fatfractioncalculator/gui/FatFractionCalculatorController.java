@@ -324,12 +324,12 @@ public class FatFractionCalculatorController {
     }
     
     /**
-     * EventHandler class for the Automatic single patient event button
+     * EventHandler class for the Automatic Multiple patient event button
      */
     private class AutomaticMultiPatientEventActionHandler 
     implements EventHandler<ActionEvent> {
     	/**
-         * Override handle to automatic single patient button click
+         * Override handle to automatic Multiple patient button click
          */
         @Override
         public void handle(ActionEvent event) {
