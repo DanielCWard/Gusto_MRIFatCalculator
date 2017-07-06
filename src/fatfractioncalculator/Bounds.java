@@ -52,6 +52,17 @@ public class Bounds {
     }
     
     /**
+     * Version of inBounds where bounds are scaled by 10.
+     * This was done in the previous version and ensures the correct result
+     * @param value value to compare
+     * @return true iff value is greater or equal to lower bound and less than
+     *         or equal to upper bound.
+     */
+    public boolean inBoundsScaledTen(int value) {
+        return (value >= (lower * 10) && value <= (upper * 10));
+    }
+    
+    /**
      * 
      * @return a copy of the bounds instance
      */

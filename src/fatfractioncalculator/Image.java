@@ -248,7 +248,7 @@ public class Image {
         
         // Add each masked pixel to the statistics
         for (Coordinate coordinate : voxelMask.getVoxels()) {
-            if (bounds.inBounds(get(coordinate))) {
+            if (bounds.inBoundsScaledTen(get(coordinate))) {
                 statistics.addPixel(coordinate, get(coordinate));      
             }
         }

@@ -178,6 +178,7 @@ public class FatVolume {
     @Override
     public String toString() {
         String string = "Voxel count: " + getVoxelCount() + "\n";
+        string += "Average Voxel Value: " + getAverageValue() + "\n";
         string += "Absolute minimum: " + getAbsoluteMin() + "\n";
         string += "Mean minimum across slices: " + getMeanMin() + "\n";
         string += "Absolute maximum: " + getAbsoluteMax() + "\n";
