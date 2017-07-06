@@ -25,6 +25,8 @@ public class MaskMriMatcher {
     private final String[] segmentationFileTemplate;
     //Mri parent directory
     private final String mriParentDirectory;
+    // StringList to set if unsuccessfull in finding an Image
+    private ArrayList<String> errorInformation;
     
     /**
      * Initialise the class with the file templates
@@ -49,6 +51,9 @@ public class MaskMriMatcher {
                 new String[imageTypeTemplate.size()]);
         this.segmentationFileTemplate = segmentationFileTemplate.toArray(
                 new String[segmentationFileTemplate.size()]);
+        
+        errorInformation = new ArrayList<>(); // Init empty Error info
+
     }
     
     /**
@@ -70,6 +75,8 @@ public class MaskMriMatcher {
         this.studyDirectoryTemplate = studyDirectoryTemplate;
         this.imageTypeTemplate = imageTypeTemplate;
         this.segmentationFileTemplate = segmentationFileTemplate;
+        
+        errorInformation = new ArrayList<>(); // Init empty Error info
     }
     
     /**
@@ -96,6 +103,8 @@ public class MaskMriMatcher {
                 imageTypeTemplates.replace(" ", "").split(",");
         this.segmentationFileTemplate = 
                 segmentationFileTemplates.replace(" ", "").split(",");
+        
+        errorInformation = new ArrayList<>(); // Init empty Error info
     }
     
     /**
@@ -144,6 +153,9 @@ public class MaskMriMatcher {
      * @return the matching Image for mask or null
      */
     public Image getImageFromMask(Mask mask) {
+        // Reset error info
+        errorInformation = new ArrayList<>();
+        
         String patientDirectory = getMriSubDirectory(
                 getPatientNumberFromMask(mask));
         String studyDirectory = getStudyDirectory(
@@ -157,8 +169,25 @@ public class MaskMriMatcher {
             return new Image(Paths.get(mriParentDirectory, patientDirectory, 
                 studyDirectory, imageDirectory).toString());
         } catch (IOException ex) {
+            // Set error StringList
+            errorInformation.add(getPatientNumberFromMask(mask));
+            errorInformation.add(" Error Unable to locate MRI");
+            errorInformation.add("mask file: " + mask.getPath());
+            errorInformation.add("mri parent directory: " + mriParentDirectory);
+            errorInformation.add("patient directory: " + patientDirectory);
+            errorInformation.add("study directory: " + studyDirectory);
+            errorInformation.add("patient directory: " + imageDirectory);
             return null;
         }
+    }
+    
+    /**
+     * 
+     * @return Information about paths searched which is set if an image is not 
+     * able to be found.
+     */
+    public ArrayList<String> getErrorInformation() {
+        return new ArrayList<>(errorInformation);
     }
     
     /**

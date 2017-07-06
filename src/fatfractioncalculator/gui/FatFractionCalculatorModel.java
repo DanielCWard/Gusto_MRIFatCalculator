@@ -56,7 +56,7 @@ public class FatFractionCalculatorModel {
             "Sex", "Age", "DOB", "Study ID", "Study Date", "MRI Folder Time",
             "Magnetic Field Strength (T)", "Voxel Height (mm)",
             "Voxel Width (mm)", "Voxel Depth (mm)", "Voxel Volume (mm^2)",
-            "MRI Image Path"};
+            "MRI Image Path", "Segmentation File Path"};
         
     
     /*
@@ -155,6 +155,7 @@ public class FatFractionCalculatorModel {
         row.add("" + image.getVoxelDimensions().getDepth());
         row.add("" + image.getVoxelVolume());
         row.add("" + image.getPath());
+        row.add("" + mask.getPath());
         
         // Write row to file
         csvWriter.writeRow(row);
@@ -163,8 +164,8 @@ public class FatFractionCalculatorModel {
     /**
      * Runs the calculation given that imagePath contains an image directory
      * not an MRI Parent directory
-     * @param csvWriter
-     * @throws IOException 
+     * @param csvWriter CSV to write the results to
+     * @throws IOException If files are unopenable
      */
     private void runManualCaculation(CsvWriter csvWriter) 
             throws IOException {
@@ -175,6 +176,31 @@ public class FatFractionCalculatorModel {
             Image image = new Image(imagePath);
             Mask mask = new Mask(maskPath);
             calculateAndWriteStatistics(image, mask, csvWriter);
+        }
+    }
+    
+    /**
+     * Runs the calculation by locating the matching Image for each mask and the
+     * MRI parent directory.
+     * @param csvWriter CSV to write the results to
+     * @param imageFinder instance of an MaskMriMatcher to locate Images
+     * @throws IOException If files are unopenable
+     */
+    private void runAutomaticCalculation(CsvWriter csvWriter, 
+            MaskMriMatcher imageFinder) throws IOException {
+        // Write heading row for CSV file
+        csvWriter.writeRow(getHeaderRow());
+        
+        for (String maskPath : segmentationFilePaths) {
+            Mask mask = new Mask(maskPath);
+            Image image = imageFinder.getImageFromMask(mask);
+            
+            if (image == null) {
+                // Failed to find a matching Image
+                csvWriter.writeRow(imageFinder.getErrorInformation());
+            } else {
+                calculateAndWriteStatistics(image, mask, csvWriter);
+            }
         }
     }
     
@@ -197,13 +223,18 @@ public class FatFractionCalculatorModel {
                 runManualCaculation(csvWriter);
             } else {
                 // Automatic mode
-                System.out.println("TODO");
+                // Create Instance of MRI Matcher
+                MaskMriMatcher imageFinder = new MaskMriMatcher(imagePath, 
+                        subjectDirectoryTemplate, studyDirectoryTemplate, 
+                        imageDirectoryTemplate, segmentationFileTemplate);
+                runAutomaticCalculation(csvWriter, imageFinder);
             }
             
             // Close the CSV Writer
             csvWriter.close();
                     
         } catch (IOException ex) {
+            System.err.println("Bad calculation run: " + ex.getMessage());
             return false;
         }
         
@@ -316,5 +347,37 @@ public class FatFractionCalculatorModel {
      */
     public void setSegmentationFilePaths(List<String> segmentationFilePaths) {
         this.segmentationFilePaths = segmentationFilePaths;
+    }
+    
+    /**
+     * Sets the subjectDirectoryTemplate
+     * @param subjectDirectoryTemplate 
+     */
+    public void setSubjectDirectoryTemplate(String subjectDirectoryTemplate) {
+        this.subjectDirectoryTemplate = subjectDirectoryTemplate;
+    }
+    
+    /**
+     * Sets the studyDirectoryTemplate
+     * @param studyDirectoryTemplate 
+     */
+    public void setStudyDirectoryTemplate(String studyDirectoryTemplate) {
+        this.studyDirectoryTemplate = studyDirectoryTemplate;
+    }
+    
+    /**
+     * Sets the imageDirectoryTemplate
+     * @param imageDirectoryTemplate 
+     */
+    public void setImageDirectoryTemplate(String imageDirectoryTemplate) {
+        this.imageDirectoryTemplate = imageDirectoryTemplate;
+    }
+    
+    /**
+     * Sets the segmentationFileTemplate
+     * @param segmentationFileTemplate 
+     */
+    public void setSegmentationFileTemplate(String segmentationFileTemplate) {
+        this.segmentationFileTemplate = segmentationFileTemplate;
     }
 }

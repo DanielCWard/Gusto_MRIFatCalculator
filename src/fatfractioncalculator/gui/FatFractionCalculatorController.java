@@ -18,9 +18,11 @@ import javafx.stage.Stage;
 public class FatFractionCalculatorController {
     
     /* Class Variables */
-    FatFractionCalculatorModel model; // The model
-    FatFractionCalculatorView view; // The view
-    Stage stage;
+    private FatFractionCalculatorModel model; // The model
+    private FatFractionCalculatorView view; // The view
+    private Stage stage; // The stage
+    // boolean to indicate if the template fields are required
+    private boolean automaticMode = false;
     
     public FatFractionCalculatorController(FatFractionCalculatorModel model, 
             FatFractionCalculatorView view, Stage stage) {
@@ -55,6 +57,8 @@ public class FatFractionCalculatorController {
                 new SelectCSVFileEventActionHandler());
         view.setStartCalculationButtonHandler(
                 new StartEventActionHandler());
+        view.setSinglePatientAutomaticButtonHandler(
+                new AutomaticSinglePatientEventActionHandler());
     }
     
     /**
@@ -142,6 +146,15 @@ public class FatFractionCalculatorController {
         return csvFile;
     }
     
+    private void getAndSetTemplates() {
+        model.setSubjectDirectoryTemplate(view.getSubjectDirectoryTemplate());
+        model.setStudyDirectoryTemplate(view.getStudyDirectoryTemplate());
+        model.setImageDirectoryTemplate(view.getImageDirectoryTemplate());
+        model.setSegmentationFileTemplate(view.getSegmentationFileTemplate());
+        // Prevent further editing
+        view.setAllTemplatesEditable(false);
+    }
+    
     /**
      * EventHandler class for the manual single patient event button
      */
@@ -153,17 +166,11 @@ public class FatFractionCalculatorController {
         @Override
         public void handle(ActionEvent event) {
             
-            /*
-            - Reset Model (Function - in model) -- Might not be needed
-            - Grey out / set templates to not applicable
-            - Check all bounds (Function)
-            - Get segmentation file from user (Function)
-            - get image Directory from user (Function)
-            - run model (Function) - this is done in the start button handler
-            */
-            
             // Reset the model
             model.reset();
+            
+            // template fields not required
+            automaticMode = false;
             
             // Set all the template fields to NA and disable editing
             view.setSubjectDirectoryTemplate(
@@ -218,6 +225,10 @@ public class FatFractionCalculatorController {
         @Override
         public void handle(ActionEvent event) {
             
+            if (automaticMode) { // Get and set the templates
+                getAndSetTemplates();
+            }
+            
             // Get the Csv file from the user
             File csvFile = getSaveCsvFileFromUser(
                     "Create a csv file");
@@ -252,6 +263,53 @@ public class FatFractionCalculatorController {
             } else {
                 view.setProgressBarProgress(1F);
             }
+        }
+    }
+    
+    /**
+     * EventHandler class for the Automatic single patient event button
+     */
+    private class AutomaticSinglePatientEventActionHandler 
+    implements EventHandler<ActionEvent> {
+    	/**
+         * Override handle to automatic single patient button click
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            
+            // Reset the model
+            model.reset();
+            
+            // template fields required
+            automaticMode = true;
+            
+            // Get the Segmentation file from the user
+            File segmentationFile = getFileFromUser(
+                    "Select a segmentation file");
+            if (segmentationFile == null) {
+                view.displayErrorAlert("Invalid segmentation file!", 
+                        "Invalid segmentation file!",
+                        "Please select a segmenation file ('.nii.gz')");
+                return;
+            }
+            
+            // Get the image Directory from the user
+            File imageDirectory = getDirectoryFromUser(
+                    "Select MRI folder");
+            if (imageDirectory == null) {
+                view.displayErrorAlert("Invalid MRI folder!", 
+                        "Invalid MRI folder!",
+                        "Please select a MRI folder");
+                return;
+            }
+            
+            // Add the image directory and the segmentation Paths to model
+            // so it is ready to run after setting CSV file
+            ArrayList<String> segmentationPaths = new ArrayList<>();
+            segmentationPaths.add(segmentationFile.toString());
+            model.setSegmentationFilePaths(segmentationPaths);
+            
+            model.setImagePath(imageDirectory.toString());
         }
     }
 }

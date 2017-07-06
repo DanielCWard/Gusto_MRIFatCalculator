@@ -339,6 +339,9 @@ public class Image {
      */
     public static boolean isValidImageDirectory(String directoryPath) {
         Path[] directoryContents = getSlicePaths(directoryPath);
+        if (directoryContents.length == 0) {
+            return false;
+        }
         for (Path p : directoryContents) {
             if (!p.toString().endsWith(".IMA")) {
                 return false;
