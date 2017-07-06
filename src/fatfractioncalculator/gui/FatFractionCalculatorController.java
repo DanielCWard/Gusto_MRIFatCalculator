@@ -3,7 +3,11 @@ package fatfractioncalculator.gui;
 import fatfractioncalculator.Bounds;
 import fatfractioncalculator.InvalidBoundsException;
 import java.io.File;
+import java.io.FilenameFilter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.DirectoryChooser;
@@ -59,6 +63,8 @@ public class FatFractionCalculatorController {
                 new StartEventActionHandler());
         view.setSinglePatientAutomaticButtonHandler(
                 new AutomaticSinglePatientEventActionHandler());
+        view.setMultiPatientAutomaticButtonHandler(
+                new AutomaticMultiPatientEventActionHandler());
     }
     
     /**
@@ -146,6 +152,10 @@ public class FatFractionCalculatorController {
         return csvFile;
     }
     
+    /**
+     * Gets all the templates from the view and sets them in the viewer
+     * and then disables further editing of them.
+     */
     private void getAndSetTemplates() {
         model.setSubjectDirectoryTemplate(view.getSubjectDirectoryTemplate());
         model.setStudyDirectoryTemplate(view.getStudyDirectoryTemplate());
@@ -307,6 +317,73 @@ public class FatFractionCalculatorController {
             // so it is ready to run after setting CSV file
             ArrayList<String> segmentationPaths = new ArrayList<>();
             segmentationPaths.add(segmentationFile.toString());
+            model.setSegmentationFilePaths(segmentationPaths);
+            
+            model.setImagePath(imageDirectory.toString());
+        }
+    }
+    
+    /**
+     * EventHandler class for the Automatic single patient event button
+     */
+    private class AutomaticMultiPatientEventActionHandler 
+    implements EventHandler<ActionEvent> {
+    	/**
+         * Override handle to automatic single patient button click
+         */
+        @Override
+        public void handle(ActionEvent event) {
+            
+            // Reset the model
+            model.reset();
+            
+            // template fields required
+            automaticMode = true;
+            
+            // Get the Segmentation file folder from the user
+            File segmentationDirectory = getDirectoryFromUser(
+                    "Select a segmentation file directory");
+            if (segmentationDirectory == null) {
+                view.displayErrorAlert("Invalid segmentation file folder!", 
+                        "Invalid segmentation file folder!",
+                        "Please select a folder containing segmenation "
+                                + "files ('.nii.gz')");
+                return;
+            }
+            
+            // Get the image Directory from the user
+            File imageDirectory = getDirectoryFromUser(
+                    "Select MRI folder");
+            if (imageDirectory == null) {
+                view.displayErrorAlert("Invalid MRI folder!", 
+                        "Invalid MRI folder!",
+                        "Please select a MRI folder");
+                return;
+            }
+            
+            // Add the image directory and the segmentation Paths to model
+            // so it is ready to run after setting CSV file
+            ArrayList<String> segmentationPaths = new ArrayList<>();
+            
+            // Add each ".nii.gz" file from the folder to the segmentationPaths
+            // Get a list of files in the given folder
+            File file = new File(segmentationDirectory.toString());
+            String[] containedFiles = file.list(
+                    new FilenameFilter() {
+                @Override
+                public boolean accept(File current, String name) {
+                    return new File(current, name).isFile();
+                }
+            }
+            );
+            // Add the parent directory to each file name to form a path
+            for (String f: containedFiles) {
+                if (f.endsWith(".nii.gz")) {
+                    segmentationPaths.add(Paths.get(
+                            segmentationDirectory.toString(), f).toString());
+                }
+            }
+            
             model.setSegmentationFilePaths(segmentationPaths);
             
             model.setImagePath(imageDirectory.toString());
