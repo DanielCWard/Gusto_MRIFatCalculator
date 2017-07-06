@@ -249,6 +249,8 @@ public class FatFractionCalculatorController {
                 view.displayErrorAlert("Calculation Error!", 
                         "Calculation Error!",
                         "Something went wrong");
+            } else {
+                view.setProgressBarProgress(1F);
             }
         }
     }

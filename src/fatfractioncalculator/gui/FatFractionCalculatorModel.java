@@ -101,7 +101,7 @@ public class FatFractionCalculatorModel {
         headerRow[13] = "WAT (%) (" + WATBounds.getLower() + "-" + 
                     WATBounds.getUpper() + ")";
         
-        return new ArrayList(Arrays.asList());
+        return new ArrayList(Arrays.asList(headerRow));
     }
     
     /**
