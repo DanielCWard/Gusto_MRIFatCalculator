@@ -290,6 +290,8 @@ public class FatFractionCalculatorController {
             // Reset the model
             model.reset();
             
+            view.setAllTemplatesEditable(true);
+            
             // template fields required
             automaticMode = true;
             
@@ -336,6 +338,8 @@ public class FatFractionCalculatorController {
             
             // Reset the model
             model.reset();
+            
+            view.setAllTemplatesEditable(true);
             
             // template fields required
             automaticMode = true;

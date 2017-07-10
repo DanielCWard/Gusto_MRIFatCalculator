@@ -1,4 +1,4 @@
-package gusto_mrifatcalculator.test.Calculation;
+package Calculation;
 
 import fatfractioncalculator.Bounds;
 import fatfractioncalculator.FatVolume;
