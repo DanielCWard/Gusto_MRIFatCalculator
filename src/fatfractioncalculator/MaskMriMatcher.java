@@ -174,11 +174,68 @@ public class MaskMriMatcher {
             errorInformation.add(" Error Unable to locate MRI");
             errorInformation.add("mask file: " + mask.getPath());
             errorInformation.add("mri parent directory: " + mriParentDirectory);
-            errorInformation.add("patient directory: " + patientDirectory);
-            errorInformation.add("study directory: " + studyDirectory);
-            errorInformation.add("patient directory: " + imageDirectory);
+            
+            if (patientDirectory == null|| patientDirectory.equals("")) {
+                // Put options there
+                errorInformation.add("patient directory not found, options"
+                        + " were: " + getContentsOfDirectoryAsString(
+                                Paths.get(mriParentDirectory).toString(),
+                        subDirectoryTemplate));
+            } else {
+                errorInformation.add("patient directory: " + patientDirectory);
+            }
+            
+            if (studyDirectory == null|| studyDirectory.equals("")) {
+                // Put options there
+                errorInformation.add("study directory not found, options"
+                        + " were: " + getContentsOfDirectoryAsString(
+                                Paths.get(mriParentDirectory, 
+                                        patientDirectory).toString(),
+                        studyDirectoryTemplate));
+            } else {
+                errorInformation.add("study directory: " + studyDirectory);
+            }
+            
+            if (imageDirectory == null|| imageDirectory.equals("")) {
+                // Put options there
+                errorInformation.add("image directory not found, options"
+                        + " were: " + getContentsOfDirectoryAsString(
+                                Paths.get(mriParentDirectory, 
+                                        patientDirectory, 
+                                        studyDirectory).toString(),
+                                imageTypeTemplate));
+            } else {
+                errorInformation.add("patient directory: " + imageDirectory);
+            }
             return null;
         }
+    }
+    
+    /**
+     * 
+     * @param directory
+     * @return A string of the contents of a directory separated by '*' and the
+     * relevant template
+     */
+    private String getContentsOfDirectoryAsString(String directory, 
+            String[] template) {
+        String contents = "";
+        String[] folders = getDirectoriesIn(directory);
+        for (String s : folders) {
+            contents += s + '*';
+        }
+        
+        folders = getFilesIn(directory);
+        for (String s : folders) {
+            contents += s + '*';
+        }
+        
+        // Add the template
+        contents += " Template options were: ";
+        for (String s : template) {
+            contents += s + '*';
+        }
+        return contents;
     }
     
     /**
