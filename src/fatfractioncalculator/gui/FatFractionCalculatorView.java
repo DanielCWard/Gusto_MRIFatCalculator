@@ -186,27 +186,6 @@ public class FatFractionCalculatorView {
         HBox.setHgrow(TIAFSliders, Priority.ALWAYS);
         // Put HBox in the grid across all 2 rows
         grid.add(TIAFSliders, 0, 3, 2, 1);
-        
-//        // Add BAT Min at column 0, row 1
-//        BATMinSlider = new Slider();
-//        grid.add(createThresholdSlider(BATMinSlider, BATMinSliderLabel), 0, 1);
-//        // Add BAT Max at column 1, row 1
-//        BATMaxSlider = new Slider();
-//        grid.add(createThresholdSlider(BATMaxSlider, BATMaxSliderLabel), 1, 1);
-//        // Add WAT Min at column 0, row 2
-//        WATMinSlider = new Slider();
-//        grid.add(createThresholdSlider(WATMinSlider, WATMinSliderLabel), 0, 2);
-//        // Add WAT Max at column 1, row 2
-//        WATMaxSlider = new Slider();
-//        grid.add(createThresholdSlider(WATMaxSlider, WATMaxSliderLabel), 1, 2);
-//        // Add TIAF Min at column 0, row 3
-//        TIAFMinSlider = new Slider();
-//        grid.add(
-//                createThresholdSlider(TIAFMinSlider, TIAFMinSliderLabel), 0, 3);
-//        // Add TIAF Max at column 1, row 3
-//        TIAFMaxSlider = new Slider();
-//        grid.add(
-//                createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel), 1, 3);
     }
     
     /**
@@ -657,6 +636,22 @@ public class FatFractionCalculatorView {
      */
     public Scene getScene() {
         return scene;
+    }
+    
+    /**
+     * 
+     * @return height of the view/scene
+     */
+    public int getHeight() {
+        return height;
+    }
+    
+    /**
+     * 
+     * @return width of the view/scene
+     */
+    public int getWidth() {
+        return width;
     }
     
     /**

@@ -25,10 +25,10 @@ public class FatFractionCalculator extends Application {
         
         primaryStage.setTitle("MRI Fat Fraction Calculator");
         primaryStage.setScene(scene);
-        primaryStage.setMinHeight(1000);
-        primaryStage.setMinWidth(2000);
-        primaryStage.setHeight(1000);
-        primaryStage.setWidth(2000);
+        primaryStage.setMinHeight(view.getHeight());
+        primaryStage.setMinWidth(view.getWidth());
+        primaryStage.setHeight(view.getHeight());
+        primaryStage.setWidth(view.getWidth());
         
         primaryStage.show();
     }
