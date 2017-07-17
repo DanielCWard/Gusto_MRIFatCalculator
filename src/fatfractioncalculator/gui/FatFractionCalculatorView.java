@@ -68,7 +68,7 @@ public class FatFractionCalculatorView {
     
     // Dimensions
     private final int height = 1000;
-    private final int width = 1500;
+    private final int width = 2000;
     
     // Buttons
     private Button singlePatientManualButton;
@@ -359,10 +359,10 @@ public class FatFractionCalculatorView {
         slider.setMin(0);
         slider.setMax(100);
         slider.setMajorTickUnit(5);
-        slider.setMinorTickCount(0);
+        slider.setMinorTickCount(5);
         slider.setShowTickMarks(true);
         slider.setShowTickLabels(true);
-        slider.setMinWidth(100);
+        slider.setMinWidth(300);
         slider.setSnapToTicks(true);
         
         // Init label with title and set to label font
