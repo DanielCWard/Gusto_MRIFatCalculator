@@ -154,26 +154,59 @@ public class FatFractionCalculatorView {
      * Populates the grid with the BAT, WAT and TIAF sliders
      */
     private void populateGridWithSliders() {
-        // Add BAT Min at column 0, row 1
+        HBox batSliders = new HBox();
         BATMinSlider = new Slider();
-        grid.add(createThresholdSlider(BATMinSlider, BATMinSliderLabel), 0, 1);
-        // Add BAT Max at column 1, row 1
         BATMaxSlider = new Slider();
-        grid.add(createThresholdSlider(BATMaxSlider, BATMaxSliderLabel), 1, 1);
-        // Add WAT Min at column 0, row 2
+        // Pack the two sliders into an HBox side by side
+        batSliders.getChildren().addAll(createThresholdSlider(BATMinSlider, 
+                    BATMinSliderLabel), 
+                createThresholdSlider(BATMaxSlider, BATMaxSliderLabel));
+        HBox.setHgrow(batSliders, Priority.ALWAYS);
+        // Put HBox in the grid across all 2 rows
+        grid.add(batSliders, 0, 1, 2, 1);
+        
+        HBox watSliders = new HBox();
         WATMinSlider = new Slider();
-        grid.add(createThresholdSlider(WATMinSlider, WATMinSliderLabel), 0, 2);
-        // Add WAT Max at column 1, row 2
         WATMaxSlider = new Slider();
-        grid.add(createThresholdSlider(WATMaxSlider, WATMaxSliderLabel), 1, 2);
-        // Add TIAF Min at column 0, row 3
+        // Pack the two sliders into an HBox side by side
+        watSliders.getChildren().addAll(createThresholdSlider(WATMinSlider, 
+                    WATMinSliderLabel), 
+                createThresholdSlider(WATMaxSlider, WATMaxSliderLabel));
+        HBox.setHgrow(watSliders, Priority.ALWAYS);
+        // Put HBox in the grid across all 2 rows
+        grid.add(watSliders, 0, 2, 2, 1);
+        
+        HBox TIAFSliders = new HBox();
         TIAFMinSlider = new Slider();
-        grid.add(
-                createThresholdSlider(TIAFMinSlider, TIAFMinSliderLabel), 0, 3);
-        // Add TIAF Max at column 1, row 3
         TIAFMaxSlider = new Slider();
-        grid.add(
-                createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel), 1, 3);
+        // Pack the two sliders into an HBox side by side
+        TIAFSliders.getChildren().addAll(createThresholdSlider(TIAFMinSlider, 
+                    TIAFMinSliderLabel), 
+                createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel));
+        HBox.setHgrow(TIAFSliders, Priority.ALWAYS);
+        // Put HBox in the grid across all 2 rows
+        grid.add(TIAFSliders, 0, 3, 2, 1);
+        
+//        // Add BAT Min at column 0, row 1
+//        BATMinSlider = new Slider();
+//        grid.add(createThresholdSlider(BATMinSlider, BATMinSliderLabel), 0, 1);
+//        // Add BAT Max at column 1, row 1
+//        BATMaxSlider = new Slider();
+//        grid.add(createThresholdSlider(BATMaxSlider, BATMaxSliderLabel), 1, 1);
+//        // Add WAT Min at column 0, row 2
+//        WATMinSlider = new Slider();
+//        grid.add(createThresholdSlider(WATMinSlider, WATMinSliderLabel), 0, 2);
+//        // Add WAT Max at column 1, row 2
+//        WATMaxSlider = new Slider();
+//        grid.add(createThresholdSlider(WATMaxSlider, WATMaxSliderLabel), 1, 2);
+//        // Add TIAF Min at column 0, row 3
+//        TIAFMinSlider = new Slider();
+//        grid.add(
+//                createThresholdSlider(TIAFMinSlider, TIAFMinSliderLabel), 0, 3);
+//        // Add TIAF Max at column 1, row 3
+//        TIAFMaxSlider = new Slider();
+//        grid.add(
+//                createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel), 1, 3);
     }
     
     /**
@@ -354,6 +387,7 @@ public class FatFractionCalculatorView {
         vBox.setSpacing(5); // Set spacing of 5
         vBox.setPadding(new Insets(10, 10, 10, 10));
     	VBox.setVgrow(vBox, Priority.ALWAYS);
+        HBox.setHgrow(vBox, Priority.ALWAYS);
         
         // Init slider to have range [0, 100] with spacing 5
         slider.setMin(0);
@@ -364,6 +398,7 @@ public class FatFractionCalculatorView {
         slider.setShowTickLabels(true);
         slider.setMinWidth(300);
         slider.setSnapToTicks(true);
+        HBox.setHgrow(slider, Priority.ALWAYS);
         
         // Init label with title and set to label font
         Label sliderLabel = new Label(label);
