@@ -184,12 +184,17 @@ public class FatFractionCalculatorModel {
      * MRI parent directory.
      * @param csvWriter CSV to write the results to
      * @param imageFinder instance of an MaskMriMatcher to locate Images
+     * @param view the view to set the progressBar
      * @throws IOException If files are unopenable
      */
     private void runAutomaticCalculation(CsvWriter csvWriter, 
-            MaskMriMatcher imageFinder) throws IOException {
+            MaskMriMatcher imageFinder, 
+            FatFractionCalculatorView view) throws IOException {
         // Write heading row for CSV file
         csvWriter.writeRow(getHeaderRow());
+        
+        float progress = 0F;
+        view.setProgressBarProgress(progress); // Set progress to 0
         
         for (String maskPath : segmentationFilePaths) {
             Mask mask = new Mask(maskPath);
@@ -201,14 +206,18 @@ public class FatFractionCalculatorModel {
             } else {
                 calculateAndWriteStatistics(image, mask, csvWriter);
             }
+            
+            progress += (1 / segmentationFilePaths.size());
+            view.setProgressBarProgress(progress); // set progress to part way
         }
     }
     
     /**
      * Runs the calculations
+     * @param view the view to set the progressBar
      * @return false if not possible to run the calculation otherwise true
      */
-    public boolean runCalculation() {
+    public boolean runCalculation(FatFractionCalculatorView view) {
         if (segmentationFilePaths == null || imagePath == null || 
                 csvPath == null) {
             return false;
@@ -227,7 +236,7 @@ public class FatFractionCalculatorModel {
                 MaskMriMatcher imageFinder = new MaskMriMatcher(imagePath, 
                         subjectDirectoryTemplate, studyDirectoryTemplate, 
                         imageDirectoryTemplate, segmentationFileTemplate);
-                runAutomaticCalculation(csvWriter, imageFinder);
+                runAutomaticCalculation(csvWriter, imageFinder, view);
             }
             
             // Close the CSV Writer

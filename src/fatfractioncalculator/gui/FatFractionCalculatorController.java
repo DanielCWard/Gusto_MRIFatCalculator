@@ -266,7 +266,7 @@ public class FatFractionCalculatorController {
             
             getViewSetModelBounds();
             
-            if (!model.runCalculation()) {
+            if (!model.runCalculation(view)) {
                 view.displayErrorAlert("Calculation Error!", 
                         "Calculation Error!",
                         "Something went wrong");
