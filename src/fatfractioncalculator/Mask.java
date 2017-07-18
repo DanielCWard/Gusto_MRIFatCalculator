@@ -130,9 +130,17 @@ public class Mask{
     }
     
     /**
-     * @return a list of the masked coordinates
+     * @return a list of the masked coordinates masked by value 1
      */
     public ArrayList<Coordinate> getVoxels(){
+        return getVoxels(1);
+    }
+    
+    /**
+     * @param maskValue The value a voxel must be to be masked
+     * @return a list of the masked coordinates having mask value voxelValue
+     */
+    public ArrayList<Coordinate> getVoxels(int maskValue){
         /* Create array list of masked pixels*/
         ArrayList<Coordinate> maskedVoxels = new ArrayList<>();
         int voxelValue;
@@ -143,7 +151,7 @@ public class Mask{
                 for (int k = 0; k < depth; k++) {
                     // Get the voxel value: 4th arg 0 seems to work
                     voxelValue = (int) volume.data.get(i, j, k, 0);
-                    if (voxelValue != absent){
+                    if (voxelValue == maskValue){
                         Coordinate voxelLocation = new Coordinate(i, j, k);
                         maskedVoxels.add(voxelLocation);
                     }
