@@ -20,7 +20,7 @@ public class FatFractionCalculatorModel {
     /* Class Variables */
     private Bounds BATBounds; // Thresholds/Bounds for BAT
     private Bounds WATBounds; // Thresholds/Bounds for WAT
-    private Bounds TIAFBounds; // Thresholds/Bounds for TIAF
+    private Bounds TSABounds; // Thresholds/Bounds for TSA
     
     // Default values for templates
     private String subjectDirectoryTemplate = "GUSTO_6YR_";
@@ -43,9 +43,9 @@ public class FatFractionCalculatorModel {
     
     // Default CSV Header
     private String[] headerRow = {"PSCID", 
-            "TIAF (%) (lower-upper)", 
-            "TIAF Vol (cm^3)", "TIAF abs Min (%)", "TIAF mean Min (%)", 
-            "TIAF abs Max (%)", "TIAF mean Max (%)",
+            "TSA (%) (lower-upper)", 
+            "TSA Vol (cm^3)", "TSA abs Min (%)", "TSA mean Min (%)", 
+            "TSA abs Max (%)", "TSA mean Max (%)",
             "BAT (%) (lower-upper)", 
             "BAT Vol (cm^3)", "BAT abs Min (%)", "BAT mean Min (%)", 
             "BAT abs Max (%)", "BAT mean Max (%)", 
@@ -62,7 +62,7 @@ public class FatFractionCalculatorModel {
     /*
     - function to set CSV and instansiate csvWriter
     - function to set templates and instansiate MRI Matcher
-    - Function to set and instansiate the BAT, WAT and TIAF bounds
+    - Function to set and instansiate the BAT, WAT and TSA bounds
     */
     
     /**
@@ -72,7 +72,7 @@ public class FatFractionCalculatorModel {
         // Set default bounds
         BATBounds = new Bounds(20, 60);
         WATBounds = new Bounds(80, 90);
-        TIAFBounds = new Bounds(20, 100);
+        TSABounds = new Bounds(20, 100);
         
         reset();
     }
@@ -91,9 +91,9 @@ public class FatFractionCalculatorModel {
      * @return headerRow for the CSV output file
      */
     private ArrayList<String> getHeaderRow() {
-        // Set TIAF bounds
-        headerRow[1] = "TIAF (%) (" + TIAFBounds.getLower() + "-" + 
-                    TIAFBounds.getUpper() + ")";
+        // Set TSA bounds
+        headerRow[1] = "TSA (%) (" + TSABounds.getLower() + "-" + 
+                    TSABounds.getUpper() + ")";
         // Set BAT Bounds
         headerRow[7] = "BAT (%) (" + BATBounds.getLower() + "-" + 
                     BATBounds.getUpper() + ")";
@@ -105,7 +105,7 @@ public class FatFractionCalculatorModel {
     }
     
     /**
-     * Runs the calculations for TIAF, BAT and WAT and writes the results to the
+     * Runs the calculations for TSA, BAT and WAT and writes the results to the
      * given csv writer
      * @param image image to calculate volumes and statistics
      * @param mask voxels to mask in the image
@@ -116,8 +116,8 @@ public class FatFractionCalculatorModel {
         ArrayList<String> row = new ArrayList<>();
         // Start with Patient ID
         row.add(image.getPatientID());
-        // TIAF Volume Stats
-        FatVolume volume = image.getMaskedVoxelStatistics(mask, TIAFBounds);
+        // TSA Volume Stats
+        FatVolume volume = image.getMaskedVoxelStatistics(mask, TSABounds);
         row.add("" + volume.getAverageValue());
         row.add("" + volume.getVolume(image.getVoxelVolume()));
         row.add("" + volume.getAbsoluteMin());
@@ -303,10 +303,10 @@ public class FatFractionCalculatorModel {
     
     /**
      * 
-     * @return The TIAFbounds
+     * @return The TSAbounds
      */
-    public Bounds getTIAFBounds() {
-        return TIAFBounds.copy();
+    public Bounds getTSABounds() {
+        return TSABounds.copy();
     }
     
     /**
@@ -326,11 +326,11 @@ public class FatFractionCalculatorModel {
     }
     
     /**
-     * Sets the TIAF bounds
+     * Sets the TSA bounds
      * @param bounds 
      */
-    public void setTIAFBounds(Bounds bounds) {
-        TIAFBounds = bounds;
+    public void setTSABounds(Bounds bounds) {
+        TSABounds = bounds;
     }
     
     /**

@@ -39,8 +39,8 @@ public class FatFractionCalculatorView {
     private Slider BATMaxSlider; // Slider to select BAT maximum threshold
     private Slider WATMinSlider; // Slider to select WAT minimum threshold
     private Slider WATMaxSlider; // Slider to select WAT maximum threshold
-    private Slider TIAFMinSlider; // Slider to select TIAF minimum threshold
-    private Slider TIAFMaxSlider; // Slider to select TIAF maximum threshold
+    private Slider TSAMinSlider; // Slider to select TSA minimum threshold
+    private Slider TSAMaxSlider; // Slider to select TSA maximum threshold
     
     // Threshold Labels
     // Label for BAT Min Slider
@@ -51,12 +51,12 @@ public class FatFractionCalculatorView {
     private final String WATMinSliderLabel = "WAT Min (%)";
     // Label for WAT Max Slider
     private final String WATMaxSliderLabel = "WAT Max (%)";
-    // Label for TIAF Min Slider
-    private final String TIAFMinSliderLabel = "Total Interscapular and "
-            + "Auxillary Fat Min (%)";
-    // Label for TIAF Max Slider
-    private final String TIAFMaxSliderLabel = "Total Interscapular and "
-            + "Auxillary Fat Max (%)";
+    // Label for TSA Min Slider
+    private final String TSAMinSliderLabel = "Total supra-clavicular and "
+            + "axillary fat Min (%)";
+    // Label for TSA Max Slider
+    private final String TSAMaxSliderLabel = "Total supra-clavicular and "
+            + "axillary fat Max (%)";
     
     //Title
     private final String title = "Fat fraction and volume calculation program";
@@ -68,7 +68,7 @@ public class FatFractionCalculatorView {
     
     // Dimensions
     private final int height = 1000;
-    private final int width = 2000;
+    private final int width = 1700;
     
     // Buttons
     private Button singlePatientManualButton;
@@ -151,7 +151,7 @@ public class FatFractionCalculatorView {
     }
     
     /**
-     * Populates the grid with the BAT, WAT and TIAF sliders
+     * Populates the grid with the BAT, WAT and TSA sliders
      */
     private void populateGridWithSliders() {
         HBox batSliders = new HBox();
@@ -176,16 +176,16 @@ public class FatFractionCalculatorView {
         // Put HBox in the grid across all 2 rows
         grid.add(watSliders, 0, 2, 2, 1);
         
-        HBox TIAFSliders = new HBox();
-        TIAFMinSlider = new Slider();
-        TIAFMaxSlider = new Slider();
+        HBox TSASliders = new HBox();
+        TSAMinSlider = new Slider();
+        TSAMaxSlider = new Slider();
         // Pack the two sliders into an HBox side by side
-        TIAFSliders.getChildren().addAll(createThresholdSlider(TIAFMinSlider, 
-                    TIAFMinSliderLabel), 
-                createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel));
-        HBox.setHgrow(TIAFSliders, Priority.ALWAYS);
+        TSASliders.getChildren().addAll(createThresholdSlider(TSAMinSlider, 
+                    TSAMinSliderLabel), 
+                createThresholdSlider(TSAMaxSlider, TSAMaxSliderLabel));
+        HBox.setHgrow(TSASliders, Priority.ALWAYS);
         // Put HBox in the grid across all 2 rows
-        grid.add(TIAFSliders, 0, 3, 2, 1);
+        grid.add(TSASliders, 0, 3, 2, 1);
     }
     
     /**
@@ -439,19 +439,19 @@ public class FatFractionCalculatorView {
     }
     
     /**
-     * Sets the value of the TIAF min threshold
+     * Sets the value of the TSA min threshold
      * @param value the value to set the slider to
      */
-    public void setTIAFMinSliderValue(double value) {
-        TIAFMinSlider.setValue(value);
+    public void setTSAMinSliderValue(double value) {
+        TSAMinSlider.setValue(value);
     }
     
     /**
-     * Sets the value of the TIAF max threshold
+     * Sets the value of the TSA max threshold
      * @param value the value to set the slider to
      */
-    public void setTIAFMaxSliderValue(double value) {
-        TIAFMaxSlider.setValue(value);
+    public void setTSAMaxSliderValue(double value) {
+        TSAMaxSlider.setValue(value);
     }
     
     /**
@@ -584,18 +584,18 @@ public class FatFractionCalculatorView {
     
     /**
      * 
-     * @return the value of the TIAF min threshold
+     * @return the value of the TSA min threshold
      */
-    public int getTIAFMinSliderValue() {
-        return (int) TIAFMinSlider.getValue();
+    public int getTSAMinSliderValue() {
+        return (int) TSAMinSlider.getValue();
     }
     
     /**
      * 
-     * @return the value of the TIAF max threshold
+     * @return the value of the TSA max threshold
      */
-    public int getTIAFMaxSliderValue() {
-        return (int) TIAFMaxSlider.getValue();
+    public int getTSAMaxSliderValue() {
+        return (int) TSAMaxSlider.getValue();
     }
     
     /**

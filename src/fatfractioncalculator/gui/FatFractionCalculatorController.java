@@ -50,9 +50,9 @@ public class FatFractionCalculatorController {
         view.setWATMinSliderValue(bounds.getLower());
         view.setWATMaxSliderValue(bounds.getUpper());
         
-        bounds = model.getTIAFBounds();
-        view.setTIAFMinSliderValue(bounds.getLower());
-        view.setTIAFMaxSliderValue(bounds.getUpper());
+        bounds = model.getTSABounds();
+        view.setTSAMinSliderValue(bounds.getLower());
+        view.setTSAMaxSliderValue(bounds.getUpper());
         
         // Assign the Handlers to the buttons
         view.setSinglePatientManualButtonHandler(
@@ -68,13 +68,13 @@ public class FatFractionCalculatorController {
     }
     
     /**
-     * Gets the BAT, WAT and TIAF bounds. Checks if they are valid and sets
+     * Gets the BAT, WAT and TSA bounds. Checks if they are valid and sets
      * the model accordingly. If bounds are not valid then an error is displayed
      */
     private void getViewSetModelBounds() {
         Bounds BATBounds;
         Bounds WATBounds;
-        Bounds TIAFBounds;
+        Bounds TSABounds;
         // BAT Bounds
         try {
             BATBounds = new Bounds(view.getBATMinSliderValue(), 
@@ -95,20 +95,20 @@ public class FatFractionCalculatorController {
             return;
         }
         
-        // TIAF Bounds
+        // TSA Bounds
         try {
-            TIAFBounds = new Bounds(view.getTIAFMinSliderValue(), 
-                    view.getTIAFMaxSliderValue());
+            TSABounds = new Bounds(view.getTSAMinSliderValue(), 
+                    view.getTSAMaxSliderValue());
         } catch (InvalidBoundsException ex) {
             view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
-                    "TIAF Max is not greater than TIAF Min.");
+                    "TSA Max is not greater than TSA Min.");
             return;
         }
         
         // Bounds are all good from here
         model.setBATBounds(BATBounds);
         model.setWATBounds(WATBounds);
-        model.setTIAFBounds(TIAFBounds);
+        model.setTSABounds(TSABounds);
     }
     
     /**
