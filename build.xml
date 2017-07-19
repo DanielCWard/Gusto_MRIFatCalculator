@@ -50,7 +50,7 @@
     nbproject/build-impl.xml and nbproject/jfx-impl.xml.
 
     -->
-    <!--  Uncomment this for distribution-->
+    <!--  Uncomment this for distribution
     <target name="-post-jfx-deploy">
        <fx:deploy width="${javafx.run.width}" height="${javafx.run.height}" 
                   nativeBundles="all"
@@ -68,5 +68,5 @@
         </fx:deploy>          
      </target>
      
-     <!---->
+     -->
 </project>

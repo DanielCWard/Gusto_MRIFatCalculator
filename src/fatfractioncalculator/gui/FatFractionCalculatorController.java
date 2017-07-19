@@ -54,9 +54,9 @@ public class FatFractionCalculatorController {
         view.setTSAMinSliderValue(bounds.getLower());
         view.setTSAMaxSliderValue(bounds.getUpper());
         
-        bounds = model.getTIAFBounds();
-        view.setTIAFMinSliderValue(bounds.getLower());
-        view.setTIAFMaxSliderValue(bounds.getUpper());
+        bounds = model.getISBounds();
+        view.setISMinSliderValue(bounds.getLower());
+        view.setISMaxSliderValue(bounds.getUpper());
         
         // Assign the Handlers to the buttons
         view.setSinglePatientManualButtonHandler(
@@ -79,7 +79,7 @@ public class FatFractionCalculatorController {
         Bounds BATBounds;
         Bounds WATBounds;
         Bounds TSABounds;
-        Bounds TIAFBounds;
+        Bounds ISBounds;
         
         // BAT Bounds
         try {
@@ -111,13 +111,13 @@ public class FatFractionCalculatorController {
             return;
         }
         
-        // TIAF Bounds
+        // IS Bounds
         try {
-            TIAFBounds = new Bounds(view.getTIAFMinSliderValue(), 
-                    view.getTIAFMaxSliderValue());
+            ISBounds = new Bounds(view.getISMinSliderValue(), 
+                    view.getISMaxSliderValue());
         } catch (InvalidBoundsException ex) {
             view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
-                    "TIAF Max is not greater than TIAF Min.");
+                    "IS Max is not greater than IS Min.");
             return;
         }
         
@@ -125,7 +125,7 @@ public class FatFractionCalculatorController {
         model.setBATBounds(BATBounds);
         model.setWATBounds(WATBounds);
         model.setTSABounds(TSABounds);
-        model.setTIAFBounds(TIAFBounds);
+        model.setISBounds(ISBounds);
     }
     
     /**

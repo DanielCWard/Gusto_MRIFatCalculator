@@ -21,12 +21,12 @@ public class FatFractionCalculatorModel {
     private Bounds BATBounds; // Thresholds/Bounds for BAT
     private Bounds WATBounds; // Thresholds/Bounds for WAT
     private Bounds TSABounds; // Thresholds/Bounds for TSA
-    private Bounds TIAFBounds; // Thresholds/Bounds for TIAF
+    private Bounds ISBounds; // Thresholds/Bounds for IS
     
     private int BATMaskValue; // BAT mask value
     private int WATMaskValue; // WAT mask value
     private int TSAMaskValue; // TSA mask value
-    private int TIAFMaskValue; // TIAF mask value
+    private int ISMaskValue; // IS mask value
     
     
     // Default values for templates
@@ -59,9 +59,9 @@ public class FatFractionCalculatorModel {
             "WAT (%) (lower-upper)", 
             "WAT Vol (cm^3)", "WAT abs Min (%)", "WAT mean Min (%)", 
             "WAT abs Max (%)", "WAT mean Max (%)",
-            "TIAF (%) (lower-upper)", 
-            "TIAF Vol (cm^3)", "TIAF abs Min (%)", "TIAF mean Min (%)", 
-            "TIAF abs Max (%)", "TIAF mean Max (%)",
+            "IS (%) (lower-upper)", 
+            "IS Vol (cm^3)", "IS abs Min (%)", "IS mean Min (%)", 
+            "IS abs Max (%)", "IS mean Max (%)",
             "Subject Height (m)", "Subject Weight (m)",
             "Sex", "Age", "DOB", "Study ID", "Study Date", "MRI Folder Time",
             "Magnetic Field Strength (T)", "Voxel Height (mm)",
@@ -83,12 +83,12 @@ public class FatFractionCalculatorModel {
         BATBounds = new Bounds(20, 60);
         WATBounds = new Bounds(80, 90);
         TSABounds = new Bounds(20, 100);
-        TIAFBounds = new Bounds(0, 100);
+        ISBounds = new Bounds(0, 100);
         
         BATMaskValue = 1;
         WATMaskValue = 1;
         TSAMaskValue = 1;
-        TIAFMaskValue = 2;
+        ISMaskValue = 2;
         reset();
     }
     
@@ -115,9 +115,9 @@ public class FatFractionCalculatorModel {
         // Set WAT Bounds
         headerRow[13] = "WAT (%) (" + WATBounds.getLower() + "-" + 
                     WATBounds.getUpper() + ")[" + WATMaskValue + "]";
-        // Set TIAF Bounds
-        headerRow[19] = "TIAF (%) (" + TIAFBounds.getLower() + "-" + 
-                    TIAFBounds.getUpper() + ")[" + TIAFMaskValue + "]";
+        // Set IS Bounds
+        headerRow[19] = "IS (%) (" + ISBounds.getLower() + "-" + 
+                    ISBounds.getUpper() + ")[" + ISMaskValue + "]";
         
         return new ArrayList(Arrays.asList(headerRow));
     }
@@ -177,8 +177,8 @@ public class FatFractionCalculatorModel {
         // WAT Volume Stats
         writeVolumeStatistics(image, mask, row, WATMaskValue, WATBounds);
         
-        // TIAF Volume Stats
-        writeVolumeStatistics(image, mask, row, TIAFMaskValue, TIAFBounds);
+        // IS Volume Stats
+        writeVolumeStatistics(image, mask, row, ISMaskValue, ISBounds);
         
         // Patient Details
         row.add("" + image.getPatientHeight());
@@ -351,10 +351,10 @@ public class FatFractionCalculatorModel {
     
     /**
      * 
-     * @return The TIAFbounds
+     * @return The ISbounds
      */
-    public Bounds getTIAFBounds() {
-        return TIAFBounds.copy();
+    public Bounds getISBounds() {
+        return ISBounds.copy();
     }
     
     /**
@@ -382,11 +382,11 @@ public class FatFractionCalculatorModel {
     }
     
     /**
-     * Sets the TIAF bounds
+     * Sets the IS bounds
      * @param bounds 
      */
-    public void setTIAFBounds(Bounds bounds) {
-        TIAFBounds = bounds;
+    public void setISBounds(Bounds bounds) {
+        ISBounds = bounds;
     }
     
     /**
