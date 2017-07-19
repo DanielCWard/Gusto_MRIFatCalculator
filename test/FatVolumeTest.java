@@ -12,6 +12,7 @@ import org.junit.Test;
  * @author Daniel Ward
  * Tests the FatVolume class.
  * Assumes that Image and Mask Classes are fully functional and tested.
+ * These Tests implicitly tests the getMaskedVoxels function of the Mask class
  */
 public class FatVolumeTest {
     
@@ -67,6 +68,41 @@ public class FatVolumeTest {
         Assert.assertTrue(14.788679245283017 == testVolume.getMeanMin());
         Assert.assertTrue(100 == testVolume.getAbsoluteMax());
         Assert.assertTrue(79.2509433962264 == testVolume.getMeanMax());
+    }
+    
+    /**
+     * @throws IOException 
+     */
+    @Test
+    public void testFatVolumeTwoSegmentMaskFile() throws IOException {
+        Image testImage = new Image("test\\testFiles\\10097_MRI-DIR");
+        Mask testMask = new Mask("test\\testFiles\\10097_BAT_SNeo9M.nii.gz");
+        
+        Bounds testBounds = new Bounds(0, 100);
+        
+        // Test first segment, mask Value 1
+        FatVolume testVolume = testImage.getMaskedVoxelStatistics(testMask, 
+                testBounds, 1);
+        
+        Assert.assertTrue(0.4678743062992893 == testVolume.getAverageValue());
+        Assert.assertTrue(29.55953496503574 == testVolume.getVolume(
+                testImage.getVoxelVolume()));
+        Assert.assertTrue(0 == testVolume.getAbsoluteMin());
+        Assert.assertTrue(1.6949152542372883 == testVolume.getMeanMin());
+        Assert.assertTrue(100 == testVolume.getAbsoluteMax());
+        Assert.assertTrue(98.79152542372881 == testVolume.getMeanMax());
+        
+        // Test second segment, mask Value 2
+        testVolume = testImage.getMaskedVoxelStatistics(testMask, 
+                testBounds, 2);
+        
+        Assert.assertTrue(0.32148755787037037 == testVolume.getAverageValue());
+        Assert.assertTrue(4.973116193124502 == testVolume.getVolume(
+                testImage.getVoxelVolume()));
+        Assert.assertTrue(0 == testVolume.getAbsoluteMin());
+        Assert.assertTrue(14.390625 == testVolume.getMeanMin());
+        Assert.assertTrue(100 == testVolume.getAbsoluteMax());
+        Assert.assertTrue(71.85625 == testVolume.getMeanMax());
         
 //        System.out.println("" + testVolume.getAverageValue());
 //        System.out.println("" + testVolume.getVolume(testImage.getVoxelVolume()));
