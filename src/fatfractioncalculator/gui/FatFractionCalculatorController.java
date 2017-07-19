@@ -283,6 +283,9 @@ public class FatFractionCalculatorController {
             
             getViewSetModelBounds();
             
+            //Reset Progress bar
+            view.setProgressBarProgress(0F);
+            
             if (!model.runCalculation(view)) {
                 view.displayErrorAlert("Calculation Error!", 
                         "Calculation Error!",
