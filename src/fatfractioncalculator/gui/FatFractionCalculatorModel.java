@@ -21,6 +21,13 @@ public class FatFractionCalculatorModel {
     private Bounds BATBounds; // Thresholds/Bounds for BAT
     private Bounds WATBounds; // Thresholds/Bounds for WAT
     private Bounds TSABounds; // Thresholds/Bounds for TSA
+    private Bounds TIAFBounds; // Thresholds/Bounds for TIAF
+    
+    private int BATMaskValue; // BAT mask value
+    private int WATMaskValue; // WAT mask value
+    private int TSAMaskValue; // TSA mask value
+    private int TIAFMaskValue; // TIAF mask value
+    
     
     // Default values for templates
     private String subjectDirectoryTemplate = "GUSTO_6YR_";
@@ -52,6 +59,9 @@ public class FatFractionCalculatorModel {
             "WAT (%) (lower-upper)", 
             "WAT Vol (cm^3)", "WAT abs Min (%)", "WAT mean Min (%)", 
             "WAT abs Max (%)", "WAT mean Max (%)",
+            "TIAF (%) (lower-upper)", 
+            "TIAF Vol (cm^3)", "TIAF abs Min (%)", "TIAF mean Min (%)", 
+            "TIAF abs Max (%)", "TIAF mean Max (%)",
             "Subject Height (m)", "Subject Weight (m)",
             "Sex", "Age", "DOB", "Study ID", "Study Date", "MRI Folder Time",
             "Magnetic Field Strength (T)", "Voxel Height (mm)",
@@ -73,7 +83,12 @@ public class FatFractionCalculatorModel {
         BATBounds = new Bounds(20, 60);
         WATBounds = new Bounds(80, 90);
         TSABounds = new Bounds(20, 100);
+        TIAFBounds = new Bounds(0, 100);
         
+        BATMaskValue = 1;
+        WATMaskValue = 1;
+        TSAMaskValue = 1;
+        TIAFMaskValue = 2;
         reset();
     }
     
@@ -93,15 +108,52 @@ public class FatFractionCalculatorModel {
     private ArrayList<String> getHeaderRow() {
         // Set TSA bounds
         headerRow[1] = "TSA (%) (" + TSABounds.getLower() + "-" + 
-                    TSABounds.getUpper() + ")";
+                    TSABounds.getUpper() + ")[" + TSAMaskValue + "]";
         // Set BAT Bounds
         headerRow[7] = "BAT (%) (" + BATBounds.getLower() + "-" + 
-                    BATBounds.getUpper() + ")";
+                    BATBounds.getUpper() + ")[" + BATMaskValue + "]";
         // Set WAT Bounds
         headerRow[13] = "WAT (%) (" + WATBounds.getLower() + "-" + 
-                    WATBounds.getUpper() + ")";
+                    WATBounds.getUpper() + ")[" + WATMaskValue + "]";
+        // Set TIAF Bounds
+        headerRow[19] = "TIAF (%) (" + TIAFBounds.getLower() + "-" + 
+                    TIAFBounds.getUpper() + ")[" + TIAFMaskValue + "]";
         
         return new ArrayList(Arrays.asList(headerRow));
+    }
+    
+    /**
+     * Calculates the statistics of a volume specified by the mask, 
+     * maskValue and bounds. The statistics are written to the row.
+     * @param image Image to calculate statistics from
+     * @param mask mask to mask the image voxels
+     * @param row row to write the statistics to
+     * @param maskValue maskValue to separate multiple masks
+     * @param bounds threshold restrictions on the masked voxels
+     */
+    private void writeVolumeStatistics(Image image, Mask mask, 
+            ArrayList<String> row, int maskValue, Bounds bounds) {
+        if (maskValue != -1) {
+            FatVolume volume = image.getMaskedVoxelStatistics(mask, bounds, 
+                maskValue);
+            if (volume.getVoxelCount() != 0) {
+                // non empty mask, return to not write NA's
+                row.add("" + volume.getAverageValue());
+                row.add("" + volume.getVolume(image.getVoxelVolume()));
+                row.add("" + volume.getAbsoluteMin());
+                row.add("" + volume.getMeanMin());
+                row.add("" + volume.getAbsoluteMax());
+                row.add("" + volume.getMeanMax());
+                return;
+            }
+        }
+        // Not masked not relevent, write NA
+        row.add("NA");
+        row.add("NA");
+        row.add("NA");
+        row.add("NA");
+        row.add("NA");
+        row.add("NA");
     }
     
     /**
@@ -117,29 +169,36 @@ public class FatFractionCalculatorModel {
         // Start with Patient ID
         row.add(image.getPatientID());
         // TSA Volume Stats
-        FatVolume volume = image.getMaskedVoxelStatistics(mask, TSABounds);
-        row.add("" + volume.getAverageValue());
-        row.add("" + volume.getVolume(image.getVoxelVolume()));
-        row.add("" + volume.getAbsoluteMin());
-        row.add("" + volume.getMeanMin());
-        row.add("" + volume.getAbsoluteMax());
-        row.add("" + volume.getMeanMax());
+        writeVolumeStatistics(image, mask, row, TSAMaskValue, TSABounds);
+//        FatVolume volume = image.getMaskedVoxelStatistics(mask, TSABounds);
+//        row.add("" + volume.getAverageValue());
+//        row.add("" + volume.getVolume(image.getVoxelVolume()));
+//        row.add("" + volume.getAbsoluteMin());
+//        row.add("" + volume.getMeanMin());
+//        row.add("" + volume.getAbsoluteMax());
+//        row.add("" + volume.getMeanMax());
         // BAT Volume Stats
-        volume = image.getMaskedVoxelStatistics(mask, BATBounds);
-        row.add("" + volume.getAverageValue());
-        row.add("" + volume.getVolume(image.getVoxelVolume()));
-        row.add("" + volume.getAbsoluteMin());
-        row.add("" + volume.getMeanMin());
-        row.add("" + volume.getAbsoluteMax());
-        row.add("" + volume.getMeanMax());
+        writeVolumeStatistics(image, mask, row, BATMaskValue, BATBounds);
+//        volume = image.getMaskedVoxelStatistics(mask, BATBounds);
+//        row.add("" + volume.getAverageValue());
+//        row.add("" + volume.getVolume(image.getVoxelVolume()));
+//        row.add("" + volume.getAbsoluteMin());
+//        row.add("" + volume.getMeanMin());
+//        row.add("" + volume.getAbsoluteMax());
+//        row.add("" + volume.getMeanMax());
         // WAT Volume Stats
-        volume = image.getMaskedVoxelStatistics(mask, WATBounds);
-        row.add("" + volume.getAverageValue());
-        row.add("" + volume.getVolume(image.getVoxelVolume()));
-        row.add("" + volume.getAbsoluteMin());
-        row.add("" + volume.getMeanMin());
-        row.add("" + volume.getAbsoluteMax());
-        row.add("" + volume.getMeanMax());
+        writeVolumeStatistics(image, mask, row, WATMaskValue, WATBounds);
+//        volume = image.getMaskedVoxelStatistics(mask, WATBounds);
+//        row.add("" + volume.getAverageValue());
+//        row.add("" + volume.getVolume(image.getVoxelVolume()));
+//        row.add("" + volume.getAbsoluteMin());
+//        row.add("" + volume.getMeanMin());
+//        row.add("" + volume.getAbsoluteMax());
+//        row.add("" + volume.getMeanMax());
+        
+        // TIAF Volume Stats
+        writeVolumeStatistics(image, mask, row, TIAFMaskValue, TIAFBounds);
+        
         // Patient Details
         row.add("" + image.getPatientHeight());
         row.add("" + image.getPatientWeight());
@@ -310,6 +369,14 @@ public class FatFractionCalculatorModel {
     }
     
     /**
+     * 
+     * @return The TIAFbounds
+     */
+    public Bounds getTIAFBounds() {
+        return TIAFBounds.copy();
+    }
+    
+    /**
      * Sets the BAT bounds
      * @param bounds 
      */
@@ -331,6 +398,14 @@ public class FatFractionCalculatorModel {
      */
     public void setTSABounds(Bounds bounds) {
         TSABounds = bounds;
+    }
+    
+    /**
+     * Sets the TIAF bounds
+     * @param bounds 
+     */
+    public void setTIAFBounds(Bounds bounds) {
+        TIAFBounds = bounds;
     }
     
     /**

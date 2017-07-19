@@ -41,6 +41,8 @@ public class FatFractionCalculatorView {
     private Slider WATMaxSlider; // Slider to select WAT maximum threshold
     private Slider TSAMinSlider; // Slider to select TSA minimum threshold
     private Slider TSAMaxSlider; // Slider to select TSA maximum threshold
+    private Slider TIAFMinSlider; // Slider to select TIAF minimum threshold
+    private Slider TIAFMaxSlider; // Slider to select TIAF maximum threshold
     
     // Threshold Labels
     // Label for BAT Min Slider
@@ -52,11 +54,13 @@ public class FatFractionCalculatorView {
     // Label for WAT Max Slider
     private final String WATMaxSliderLabel = "WAT Max (%)";
     // Label for TSA Min Slider
-    private final String TSAMinSliderLabel = "Total supra-clavicular and "
-            + "axillary fat Min (%)";
+    private final String TSAMinSliderLabel = "TSA Min (%)";
     // Label for TSA Max Slider
-    private final String TSAMaxSliderLabel = "Total supra-clavicular and "
-            + "axillary fat Max (%)";
+    private final String TSAMaxSliderLabel = "TSA Max (%)";
+    // Label for TIAF Min Slider
+    private final String TIAFMinSliderLabel = "TIAF Min (%)";
+    // Label for TIAF Max Slider
+    private final String TIAFMaxSliderLabel = "TIAF Max (%)";
     
     //Title
     private final String title = "Fat fraction and volume calculation program";
@@ -186,6 +190,17 @@ public class FatFractionCalculatorView {
         HBox.setHgrow(TSASliders, Priority.ALWAYS);
         // Put HBox in the grid across all 2 rows
         grid.add(TSASliders, 0, 3, 2, 1);
+        
+        HBox TIAFSliders = new HBox();
+        TIAFMinSlider = new Slider();
+        TIAFMaxSlider = new Slider();
+        // Pack the two sliders into an HBox side by side
+        TIAFSliders.getChildren().addAll(createThresholdSlider(TIAFMinSlider, 
+                    TIAFMinSliderLabel), 
+                createThresholdSlider(TIAFMaxSlider, TIAFMaxSliderLabel));
+        HBox.setHgrow(TSASliders, Priority.ALWAYS);
+        // Put HBox in the grid across all 2 rows
+        grid.add(TIAFSliders, 0, 4, 2, 1);
     }
     
     /**
@@ -230,8 +245,8 @@ public class FatFractionCalculatorView {
                 singlePatientAutomaticButton, multiPatientAutomaticButton, 
                 pad1);
         
-        // Add it all to row 4 of the grid spanning all 2 columns and 1 row
-        grid.add(hBox, 0, 4, 2, 1);
+        // Add it all to row 5 of the grid spanning all 2 columns and 1 row
+        grid.add(hBox, 0, 5, 2, 1);
         
         // Select CSV Button
         setCsvFileButton = createButton(
@@ -244,8 +259,8 @@ public class FatFractionCalculatorView {
         vBox.getChildren().addAll(setCsvFileButton, 
                 startCalculationButton);
         
-        // Add it all to row 6 of the grid spanning all 2 columns and 1 row
-        grid.add(vBox, 0, 6, 2, 1);
+        // Add it all to row 7 of the grid spanning all 2 columns and 1 row
+        grid.add(vBox, 0, 7, 2, 1);
     }
     
     /**
@@ -283,8 +298,8 @@ public class FatFractionCalculatorView {
         
         vBox.getChildren().addAll(hBox, calculationProgressBar);
         
-        // Add it all to row 7 of the grid spanning all 2 columns and 1 row
-        grid.add(vBox, 0, 7, 2, 1);
+        // Add it all to row 8 of the grid spanning all 2 columns and 1 row
+        grid.add(vBox, 0, 8, 2, 1);
     }
     
     /**
@@ -316,8 +331,8 @@ public class FatFractionCalculatorView {
         vBox.getChildren().addAll(subjectDirectory, studyDirectory, 
                 imageDirectory, segmentationFile);
         
-        // Add to grid at column 0 row 5
-        grid.add(vBox, 0, 5, 2, 1);
+        // Add to grid at column 0 row 6
+        grid.add(vBox, 0, 6, 2, 1);
     }
     
     /**
@@ -452,6 +467,22 @@ public class FatFractionCalculatorView {
      */
     public void setTSAMaxSliderValue(double value) {
         TSAMaxSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the TIAF max threshold
+     * @param value the value to set the slider to
+     */
+    public void setTIAFMaxSliderValue(double value) {
+        TIAFMaxSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the TIAF min threshold
+     * @param value the value to set the slider to
+     */
+    public void setTIAFMinSliderValue(double value) {
+        TIAFMinSlider.setValue(value);
     }
     
     /**
@@ -596,6 +627,22 @@ public class FatFractionCalculatorView {
      */
     public int getTSAMaxSliderValue() {
         return (int) TSAMaxSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the TIAF min threshold
+     */
+    public int getTIAFMinSliderValue() {
+        return (int) TIAFMinSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the TIAF max threshold
+     */
+    public int getTIAFMaxSliderValue() {
+        return (int) TIAFMaxSlider.getValue();
     }
     
     /**
