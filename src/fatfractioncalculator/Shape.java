@@ -100,7 +100,7 @@ public class Shape {
      */
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Coordinate)) {
+        if (!(object instanceof Shape)) {
             return false;
         } else {
             Shape compare = (Shape) object;

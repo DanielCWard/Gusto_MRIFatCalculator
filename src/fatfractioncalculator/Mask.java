@@ -100,7 +100,7 @@ public class Mask{
      *         are equal to those of this instance
      */
     public boolean checkShape(Shape shape) {
-        return shape == getShape();
+        return shape.equals(getShape());
     }
     
     /**
