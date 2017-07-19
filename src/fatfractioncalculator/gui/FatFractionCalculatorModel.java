@@ -170,31 +170,12 @@ public class FatFractionCalculatorModel {
         row.add(image.getPatientID());
         // TSA Volume Stats
         writeVolumeStatistics(image, mask, row, TSAMaskValue, TSABounds);
-//        FatVolume volume = image.getMaskedVoxelStatistics(mask, TSABounds);
-//        row.add("" + volume.getAverageValue());
-//        row.add("" + volume.getVolume(image.getVoxelVolume()));
-//        row.add("" + volume.getAbsoluteMin());
-//        row.add("" + volume.getMeanMin());
-//        row.add("" + volume.getAbsoluteMax());
-//        row.add("" + volume.getMeanMax());
+        
         // BAT Volume Stats
         writeVolumeStatistics(image, mask, row, BATMaskValue, BATBounds);
-//        volume = image.getMaskedVoxelStatistics(mask, BATBounds);
-//        row.add("" + volume.getAverageValue());
-//        row.add("" + volume.getVolume(image.getVoxelVolume()));
-//        row.add("" + volume.getAbsoluteMin());
-//        row.add("" + volume.getMeanMin());
-//        row.add("" + volume.getAbsoluteMax());
-//        row.add("" + volume.getMeanMax());
+        
         // WAT Volume Stats
         writeVolumeStatistics(image, mask, row, WATMaskValue, WATBounds);
-//        volume = image.getMaskedVoxelStatistics(mask, WATBounds);
-//        row.add("" + volume.getAverageValue());
-//        row.add("" + volume.getVolume(image.getVoxelVolume()));
-//        row.add("" + volume.getAbsoluteMin());
-//        row.add("" + volume.getMeanMin());
-//        row.add("" + volume.getAbsoluteMax());
-//        row.add("" + volume.getMeanMax());
         
         // TIAF Volume Stats
         writeVolumeStatistics(image, mask, row, TIAFMaskValue, TIAFBounds);

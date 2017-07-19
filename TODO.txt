@@ -1,3 +1,12 @@
+- Different segmentation masks in the same nii.gz file
+  - The client has suggested / asked for nii.gz files which have multiple segmentations.
+    i.e. the exisiting WAT/BAT/TSA and then a  TIAF segmentation in different colour.
+    At present this is implemented through hard coding the different mask values 1 for WAT/BAT/TSA and then 2 for TIAF.
+    PROPOSED SOLUTION/ IMPLEMENTATION:
+      - Modify the whole system so in stead of setting BAT then WAT then TSA bounds etc. 
+        Add different expected volumes 1 at a time, specifying the bounds and the mask value.
+        The output file columns will then be adjusted accordingly.
+    
 - Unit tests []
 	- For image and mask loading use example file and hard code expected results []
 	- For fileMatcher create file structure of example directories and successfull directory can contain sample file []
