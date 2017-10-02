@@ -45,8 +45,8 @@ public class FatFractionCalculatorView {
     private Slider WATISMaxSlider; // Slider to select WAT IS maximum threshold
     private Slider TSAMinSlider; // Slider to select TSA minimum threshold
     private Slider TSAMaxSlider; // Slider to select TSA maximum threshold
-    private Slider ISMinSlider; // Slider to select IS minimum threshold
-    private Slider ISMaxSlider; // Slider to select IS maximum threshold
+    private Slider TISMinSlider; // Slider to select TIS minimum threshold
+    private Slider TISMaxSlider; // Slider to select TIS maximum threshold
     
     // Threshold Labels
     // Label for BAT SA Min Slider
@@ -71,10 +71,10 @@ public class FatFractionCalculatorView {
     private final String TSAMinSliderLabel = "TSA Min (%)";
     // Label for TSA Max Slider
     private final String TSAMaxSliderLabel = "TSA Max (%)";
-    // Label for IS Min Slider
-    private final String ISMinSliderLabel = "IS Min (%)";
-    // Label for IS Max Slider
-    private final String ISMaxSliderLabel = "IS Max (%)";
+    // Label for TIS Min Slider
+    private final String TISMinSliderLabel = "TIS Min (%)";
+    // Label for TIS Max Slider
+    private final String TISMaxSliderLabel = "TIS Max (%)";
     
     //Title
     private final String title = "Fat fraction and volume calculation program";
@@ -235,16 +235,16 @@ public class FatFractionCalculatorView {
         // Put HBox in the grid across all 2 rows
         grid.add(TSASliders, 0, 3, 2, 1);
         
-        HBox ISSliders = new HBox();
-        ISMinSlider = new Slider();
-        ISMaxSlider = new Slider();
+        HBox TISSliders = new HBox();
+        TISMinSlider = new Slider();
+        TISMaxSlider = new Slider();
         // Pack the two sliders into an HBox side by side
-        ISSliders.getChildren().addAll(createThresholdSlider(ISMinSlider, 
-                    ISMinSliderLabel), 
-                createThresholdSlider(ISMaxSlider, ISMaxSliderLabel));
-        HBox.setHgrow(TSASliders, Priority.ALWAYS);
+        TISSliders.getChildren().addAll(createThresholdSlider(TISMinSlider, 
+                    TISMinSliderLabel), 
+                createThresholdSlider(TISMaxSlider, TISMaxSliderLabel));
+        HBox.setHgrow(TISSliders, Priority.ALWAYS);
         // Put HBox in the grid across all 2 rows
-        grid.add(ISSliders, 0, 4, 2, 1);
+        grid.add(TISSliders, 0, 4, 2, 1);
     }
     
     /**
@@ -546,19 +546,19 @@ public class FatFractionCalculatorView {
     }
     
     /**
-     * Sets the value of the IS max threshold
+     * Sets the value of the TIS max threshold
      * @param value the value to set the slider to
      */
-    public void setISMaxSliderValue(double value) {
-        ISMaxSlider.setValue(value);
+    public void setTISMaxSliderValue(double value) {
+        TISMaxSlider.setValue(value);
     }
     
     /**
      * Sets the value of the IS min threshold
      * @param value the value to set the slider to
      */
-    public void setISMinSliderValue(double value) {
-        ISMinSlider.setValue(value);
+    public void setTISMinSliderValue(double value) {
+        TISMinSlider.setValue(value);
     }
     
     /**
@@ -739,18 +739,18 @@ public class FatFractionCalculatorView {
     
     /**
      * 
-     * @return the value of the IS min threshold
+     * @return the value of the TIS min threshold
      */
-    public int getISMinSliderValue() {
-        return (int) ISMinSlider.getValue();
+    public int getTISMinSliderValue() {
+        return (int) TISMinSlider.getValue();
     }
     
     /**
      * 
-     * @return the value of the IS max threshold
+     * @return the value of the TIS max threshold
      */
-    public int getISMaxSliderValue() {
-        return (int) ISMaxSlider.getValue();
+    public int getTISMaxSliderValue() {
+        return (int) TISMaxSlider.getValue();
     }
     
     /**
