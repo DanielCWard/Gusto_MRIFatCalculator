@@ -18,13 +18,17 @@ import java.util.List;
 public class FatFractionCalculatorModel {
     
     /* Class Variables */
-    private Bounds BATBounds; // Thresholds/Bounds for BAT
-    private Bounds WATBounds; // Thresholds/Bounds for WAT
+    private Bounds BATSABounds; // Thresholds/Bounds for BAT SA
+    private Bounds BATISBounds; // Thresholds/Bounds for BAT IS
+    private Bounds WATSABounds; // Thresholds/Bounds for WAT SA
+    private Bounds WATISBounds; // Thresholds/Bounds for WAT IS
     private Bounds TSABounds; // Thresholds/Bounds for TSA
     private Bounds ISBounds; // Thresholds/Bounds for IS
     
-    private int BATMaskValue; // BAT mask value
-    private int WATMaskValue; // WAT mask value
+    private int BATSAMaskValue; // BAT SA mask value
+    private int BATISMaskValue; // BAT IS mask value
+    private int WATSAMaskValue; // WAT SA mask value
+    private int WATISMaskValue; // WAT IS mask value
     private int TSAMaskValue; // TSA mask value
     private int ISMaskValue; // IS mask value
     
@@ -53,12 +57,18 @@ public class FatFractionCalculatorModel {
             "TSA (%) (lower-upper)", 
             "TSA Vol (cm^3)", "TSA abs Min (%)", "TSA mean Min (%)", 
             "TSA abs Max (%)", "TSA mean Max (%)",
-            "BAT (%) (lower-upper)", 
-            "BAT Vol (cm^3)", "BAT abs Min (%)", "BAT mean Min (%)", 
-            "BAT abs Max (%)", "BAT mean Max (%)", 
-            "WAT (%) (lower-upper)", 
-            "WAT Vol (cm^3)", "WAT abs Min (%)", "WAT mean Min (%)", 
-            "WAT abs Max (%)", "WAT mean Max (%)",
+            "BAT SA (%) (lower-upper)", 
+            "BAT SA Vol (cm^3)", "BAT SA abs Min (%)", "BAT SA mean Min (%)", 
+            "BAT SA abs Max (%)", "BAT SA mean Max (%)", 
+            "BAT IS (%) (lower-upper)", 
+            "BAT IS Vol (cm^3)", "BAT IS abs Min (%)", "BAT IS mean Min (%)", 
+            "BAT IS abs Max (%)", "BAT IS mean Max (%)",
+            "WAT SA (%) (lower-upper)", 
+            "WAT SA Vol (cm^3)", "WAT SA abs Min (%)", "WAT SA mean Min (%)", 
+            "WAT SA abs Max (%)", "WAT SA mean Max (%)",
+            "WAT IS (%) (lower-upper)", 
+            "WAT IS Vol (cm^3)", "WAT IS abs Min (%)", "WAT IS mean Min (%)", 
+            "WAT IS abs Max (%)", "WAT IS mean Max (%)",
             "IS (%) (lower-upper)", 
             "IS Vol (cm^3)", "IS abs Min (%)", "IS mean Min (%)", 
             "IS abs Max (%)", "IS mean Max (%)",
@@ -80,13 +90,17 @@ public class FatFractionCalculatorModel {
      */
     public FatFractionCalculatorModel() {
         // Set default bounds
-        BATBounds = new Bounds(20, 60);
-        WATBounds = new Bounds(80, 90);
+        BATSABounds = new Bounds(20, 60);
+        BATISBounds = new Bounds(20, 60);
+        WATSABounds = new Bounds(80, 90);
+        WATISBounds = new Bounds(80, 90);
         TSABounds = new Bounds(20, 100);
         ISBounds = new Bounds(0, 100);
         
-        BATMaskValue = 1;
-        WATMaskValue = 1;
+        BATSAMaskValue = 1;
+        BATISMaskValue = 1;
+        WATSAMaskValue = 1;
+        WATISMaskValue = 1;
         TSAMaskValue = 1;
         ISMaskValue = 2;
         reset();
@@ -110,13 +124,17 @@ public class FatFractionCalculatorModel {
         headerRow[1] = "TSA (%) (" + TSABounds.getLower() + "-" + 
                     TSABounds.getUpper() + ")[" + TSAMaskValue + "]";
         // Set BAT Bounds
-        headerRow[7] = "BAT (%) (" + BATBounds.getLower() + "-" + 
-                    BATBounds.getUpper() + ")[" + BATMaskValue + "]";
+        headerRow[7] = "BAT SA (%) (" + BATSABounds.getLower() + "-" + 
+                    BATSABounds.getUpper() + ")[" + BATSAMaskValue + "]";
+        headerRow[13] = "BAT IS (%) (" + BATISBounds.getLower() + "-" + 
+                BATISBounds.getUpper() + ")[" + BATISMaskValue + "]";
         // Set WAT Bounds
-        headerRow[13] = "WAT (%) (" + WATBounds.getLower() + "-" + 
-                    WATBounds.getUpper() + ")[" + WATMaskValue + "]";
+        headerRow[19] = "WAT SA (%) (" + WATSABounds.getLower() + "-" + 
+                    WATSABounds.getUpper() + ")[" + WATSAMaskValue + "]";
+        headerRow[25] = "WAT IS (%) (" + WATISBounds.getLower() + "-" + 
+                WATISBounds.getUpper() + ")[" + WATISMaskValue + "]";
         // Set IS Bounds
-        headerRow[19] = "IS (%) (" + ISBounds.getLower() + "-" + 
+        headerRow[31] = "IS (%) (" + ISBounds.getLower() + "-" + 
                     ISBounds.getUpper() + ")[" + ISMaskValue + "]";
         
         return new ArrayList(Arrays.asList(headerRow));
@@ -147,7 +165,7 @@ public class FatFractionCalculatorModel {
                 return;
             }
         }
-        // Not masked not relevent, write NA
+        // Not masked not relevant, write NA
         row.add("NA");
         row.add("NA");
         row.add("NA");
@@ -172,10 +190,12 @@ public class FatFractionCalculatorModel {
         writeVolumeStatistics(image, mask, row, TSAMaskValue, TSABounds);
         
         // BAT Volume Stats
-        writeVolumeStatistics(image, mask, row, BATMaskValue, BATBounds);
+        writeVolumeStatistics(image, mask, row, BATSAMaskValue, BATSABounds);
+        writeVolumeStatistics(image, mask, row, BATISMaskValue, BATISBounds);
         
         // WAT Volume Stats
-        writeVolumeStatistics(image, mask, row, WATMaskValue, WATBounds);
+        writeVolumeStatistics(image, mask, row, WATSAMaskValue, WATSABounds);
+        writeVolumeStatistics(image, mask, row, WATISMaskValue, WATISBounds);
         
         // IS Volume Stats
         writeVolumeStatistics(image, mask, row, ISMaskValue, ISBounds);
@@ -327,18 +347,34 @@ public class FatFractionCalculatorModel {
     
     /**
      * 
-     * @return The BATbounds
+     * @return The BATSAbounds
      */
-    public Bounds getBATBounds() {
-        return BATBounds.copy();
+    public Bounds getBATSABounds() {
+        return BATSABounds.copy();
     }
     
     /**
      * 
-     * @return The WATbounds
+     * @return The BATISbounds
      */
-    public Bounds getWATBounds() {
-        return WATBounds.copy();
+    public Bounds getBATISBounds() {
+        return BATISBounds.copy();
+    }
+    
+    /**
+     * 
+     * @return The WAT SA bounds
+     */
+    public Bounds getWATSABounds() {
+        return WATSABounds.copy();
+    }
+    
+    /**
+     * 
+     * @return The WAT IS bounds
+     */
+    public Bounds getWATISBounds() {
+        return WATISBounds.copy();
     }
     
     /**
@@ -358,19 +394,35 @@ public class FatFractionCalculatorModel {
     }
     
     /**
-     * Sets the BAT bounds
+     * Sets the BAT SA bounds
      * @param bounds 
      */
-    public void setBATBounds(Bounds bounds) {
-        BATBounds = bounds;
+    public void setBATSABounds(Bounds bounds) {
+        BATSABounds = bounds;
     }
     
     /**
-     * Sets the WAT bounds
+     * Sets the BAT bounds
      * @param bounds 
      */
-    public void setWATBounds(Bounds bounds) {
-        WATBounds = bounds;
+    public void setBATISBounds(Bounds bounds) {
+        BATISBounds = bounds;
+    }
+    
+    /**
+     * Sets the WAT SA bounds
+     * @param bounds 
+     */
+    public void setWATSABounds(Bounds bounds) {
+        WATSABounds = bounds;
+    }
+    
+    /**
+     * Sets the WAT IS bounds
+     * @param bounds 
+     */
+    public void setWATISBounds(Bounds bounds) {
+        WATISBounds = bounds;
     }
     
     /**

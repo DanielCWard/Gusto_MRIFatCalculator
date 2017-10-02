@@ -42,13 +42,21 @@ public class FatFractionCalculatorController {
         view.setSegmentationFileTemplate(model.getSegmentationFileTemplate());
         
         // Set default bounds
-        Bounds bounds = model.getBATBounds();
-        view.setBATMinSliderValue(bounds.getLower());
-        view.setBATMaxSliderValue(bounds.getUpper());
+        Bounds bounds = model.getBATSABounds();
+        view.setBATSAMinSliderValue(bounds.getLower());
+        view.setBATSAMaxSliderValue(bounds.getUpper());
         
-        bounds = model.getWATBounds();
-        view.setWATMinSliderValue(bounds.getLower());
-        view.setWATMaxSliderValue(bounds.getUpper());
+        bounds = model.getBATISBounds();
+        view.setBATISMinSliderValue(bounds.getLower());
+        view.setBATISMaxSliderValue(bounds.getUpper());
+        
+        bounds = model.getWATSABounds();
+        view.setWATSAMinSliderValue(bounds.getLower());
+        view.setWATSAMaxSliderValue(bounds.getUpper());
+        
+        bounds = model.getWATISBounds();
+        view.setWATISMinSliderValue(bounds.getLower());
+        view.setWATISMaxSliderValue(bounds.getUpper());
         
         bounds = model.getTSABounds();
         view.setTSAMinSliderValue(bounds.getLower());
@@ -76,28 +84,50 @@ public class FatFractionCalculatorController {
      * the model accordingly. If bounds are not valid then an error is displayed
      */
     private void getViewSetModelBounds() {
-        Bounds BATBounds;
-        Bounds WATBounds;
+        Bounds BATSABounds;
+        Bounds BATISBounds;
+        Bounds WATSABounds;
+        Bounds WATISBounds;
         Bounds TSABounds;
         Bounds ISBounds;
         
-        // BAT Bounds
+        // BAT SA Bounds
         try {
-            BATBounds = new Bounds(view.getBATMinSliderValue(), 
-                    view.getBATMaxSliderValue());
+            BATSABounds = new Bounds(view.getBATSAMinSliderValue(), 
+                    view.getBATSAMaxSliderValue());
         } catch (InvalidBoundsException ex) {
             view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
-                    "BAT Max is not greater than BAT Min.");
+                    "BAT SA Max is not greater than BAT SA Min.");
             return;
         }
         
-        // WAT Bounds
+        // BAT IS Bounds
         try {
-            WATBounds = new Bounds(view.getWATMinSliderValue(), 
-                    view.getWATMaxSliderValue());
+            BATISBounds = new Bounds(view.getBATISMinSliderValue(), 
+                    view.getBATISMaxSliderValue());
         } catch (InvalidBoundsException ex) {
             view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
-                    "WAT Max is not greater than WAT Min.");
+                    "BAT IS Max is not greater than BAT IS Min.");
+            return;
+        }
+        
+        // WAT SA Bounds
+        try {
+            WATSABounds = new Bounds(view.getWATSAMinSliderValue(), 
+                    view.getWATSAMaxSliderValue());
+        } catch (InvalidBoundsException ex) {
+            view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
+                    "WAT SA Max is not greater than WAT SA Min.");
+            return;
+        }
+        
+        // WAT IS Bounds
+        try {
+            WATISBounds = new Bounds(view.getWATISMinSliderValue(), 
+                    view.getWATISMaxSliderValue());
+        } catch (InvalidBoundsException ex) {
+            view.displayErrorAlert("Invalid Bounds!", "Invalid Bounds!", 
+                    "WAT IS Max is not greater than WAT IS Min.");
             return;
         }
         
@@ -122,8 +152,10 @@ public class FatFractionCalculatorController {
         }
         
         // Bounds are all good from here
-        model.setBATBounds(BATBounds);
-        model.setWATBounds(WATBounds);
+        model.setBATSABounds(BATSABounds);
+        model.setBATISBounds(BATISBounds);
+        model.setWATSABounds(WATSABounds);
+        model.setWATISBounds(WATISBounds);
         model.setTSABounds(TSABounds);
         model.setISBounds(ISBounds);
     }

@@ -35,24 +35,38 @@ public class FatFractionCalculatorView {
     private GridPane grid;
     
     // Threshold Sliders
-    private Slider BATMinSlider; // Slider to select BAT minimum threshold
-    private Slider BATMaxSlider; // Slider to select BAT maximum threshold
-    private Slider WATMinSlider; // Slider to select WAT minimum threshold
-    private Slider WATMaxSlider; // Slider to select WAT maximum threshold
+    private Slider BATSAMinSlider; // Slider to select BAT SA minimum threshold
+    private Slider BATSAMaxSlider; // Slider to select BAT SA maximum threshold
+    private Slider BATISMinSlider; // Slider to select BAT IS minimum threshold
+    private Slider BATISMaxSlider; // Slider to select BAT IS maximum threshold
+    private Slider WATSAMinSlider; // Slider to select WAT SA minimum threshold
+    private Slider WATSAMaxSlider; // Slider to select WAT SA maximum threshold
+    private Slider WATISMinSlider; // Slider to select WAT IS minimum threshold
+    private Slider WATISMaxSlider; // Slider to select WAT IS maximum threshold
     private Slider TSAMinSlider; // Slider to select TSA minimum threshold
     private Slider TSAMaxSlider; // Slider to select TSA maximum threshold
     private Slider ISMinSlider; // Slider to select IS minimum threshold
     private Slider ISMaxSlider; // Slider to select IS maximum threshold
     
     // Threshold Labels
-    // Label for BAT Min Slider
-    private final String BATMinSliderLabel = "BAT Min (%)";
-    // Label for BAT Max Slider
-    private final String BATMaxSliderLabel = "BAT Max (%)";
-    // Label for WAT Min Slider
-    private final String WATMinSliderLabel = "WAT Min (%)";
-    // Label for WAT Max Slider
-    private final String WATMaxSliderLabel = "WAT Max (%)";
+    // Label for BAT SA Min Slider
+    private final String BATSAMinSliderLabel = "BAT SA Min (%)";
+    // Label for BAT SA Max Slider
+    private final String BATSAMaxSliderLabel = "BAT SA Max (%)";
+ // Label for BAT IS Min Slider
+    private final String BATISMinSliderLabel = "BAT IS Min (%)";
+    // Label for BAT IS Max Slider
+    private final String BATISMaxSliderLabel = "BAT IS Max (%)";
+    
+    // Label for WAT SA Min Slider
+    private final String WATSAMinSliderLabel = "WAT SA Min (%)";
+    // Label for WAT SA Max Slider
+    private final String WATSAMaxSliderLabel = "WAT SA Max (%)";
+ // Label for WAT Min IS Slider
+    private final String WATISMinSliderLabel = "WAT IS Min (%)";
+    // Label for WAT Max IS Slider
+    private final String WATISMaxSliderLabel = "WAT IS Max (%)";
+    
     // Label for TSA Min Slider
     private final String TSAMinSliderLabel = "TSA Min (%)";
     // Label for TSA Max Slider
@@ -158,26 +172,56 @@ public class FatFractionCalculatorView {
      * Populates the grid with the BAT, WAT and TSA sliders
      */
     private void populateGridWithSliders() {
-        HBox batSliders = new HBox();
-        BATMinSlider = new Slider();
-        BATMaxSlider = new Slider();
+    	VBox batSliders = new VBox();
+    	// BAT SA 
+        HBox batSASliders = new HBox();
+        BATSAMinSlider = new Slider();
+        BATSAMaxSlider = new Slider();
         // Pack the two sliders into an HBox side by side
-        batSliders.getChildren().addAll(createThresholdSlider(BATMinSlider, 
-                    BATMinSliderLabel), 
-                createThresholdSlider(BATMaxSlider, BATMaxSliderLabel));
-        HBox.setHgrow(batSliders, Priority.ALWAYS);
-        // Put HBox in the grid across all 2 rows
+        batSASliders.getChildren().addAll(createThresholdSlider(BATSAMinSlider, 
+                    BATSAMinSliderLabel), 
+                createThresholdSlider(BATSAMaxSlider, BATSAMaxSliderLabel));
+        HBox.setHgrow(batSASliders, Priority.ALWAYS);
+        
+        // BAT IS
+        HBox batISSliders = new HBox();
+        BATISMinSlider = new Slider();
+        BATISMaxSlider = new Slider();
+        // Pack the two sliders into an HBox side by side
+        batISSliders.getChildren().addAll(createThresholdSlider(BATISMinSlider, 
+                    BATISMinSliderLabel), 
+                createThresholdSlider(BATISMaxSlider, BATISMaxSliderLabel));
+        HBox.setHgrow(batISSliders, Priority.ALWAYS);
+        
+        // Put both sets of sliders in the vbox
+        batSliders.getChildren().addAll(batSASliders, batISSliders);
+        // Put VBox in the grid across all 2 rows
         grid.add(batSliders, 0, 1, 2, 1);
         
-        HBox watSliders = new HBox();
-        WATMinSlider = new Slider();
-        WATMaxSlider = new Slider();
+        VBox watSliders = new VBox();        
+        // WAT SA
+        HBox watSASliders = new HBox();
+        WATSAMinSlider = new Slider();
+        WATSAMaxSlider = new Slider();
         // Pack the two sliders into an HBox side by side
-        watSliders.getChildren().addAll(createThresholdSlider(WATMinSlider, 
-                    WATMinSliderLabel), 
-                createThresholdSlider(WATMaxSlider, WATMaxSliderLabel));
-        HBox.setHgrow(watSliders, Priority.ALWAYS);
-        // Put HBox in the grid across all 2 rows
+        watSASliders.getChildren().addAll(createThresholdSlider(WATSAMinSlider, 
+                    WATSAMinSliderLabel), 
+                createThresholdSlider(WATSAMaxSlider, WATSAMaxSliderLabel));
+        HBox.setHgrow(watSASliders, Priority.ALWAYS);
+        
+        // WAT IS
+        HBox watISSliders = new HBox();
+        WATISMinSlider = new Slider();
+        WATISMaxSlider = new Slider();
+        // Pack the two sliders into an HBox side by side
+        watISSliders.getChildren().addAll(createThresholdSlider(WATISMinSlider, 
+                    WATISMinSliderLabel), 
+                createThresholdSlider(WATISMaxSlider, WATISMaxSliderLabel));
+        HBox.setHgrow(watISSliders, Priority.ALWAYS);
+        
+        // Put both sets of sliders in the vbox
+        watSliders.getChildren().addAll(watSASliders, watISSliders);
+        // Put VBox in the grid across all 2 rows
         grid.add(watSliders, 0, 2, 2, 1);
         
         HBox TSASliders = new HBox();
@@ -422,35 +466,67 @@ public class FatFractionCalculatorView {
     }
     
     /**
-     * Sets the value of the BAT min threshold
+     * Sets the value of the BAT SA min threshold
      * @param value the value to set the slider to
      */
-    public void setBATMinSliderValue(double value) {
-        BATMinSlider.setValue(value);
+    public void setBATSAMinSliderValue(double value) {
+        BATSAMinSlider.setValue(value);
     }
     
     /**
-     * Sets the value of the BAT max threshold
+     * Sets the value of the BAT SA max threshold
      * @param value the value to set the slider to
      */
-    public void setBATMaxSliderValue(double value) {
-        BATMaxSlider.setValue(value);
+    public void setBATSAMaxSliderValue(double value) {
+        BATSAMaxSlider.setValue(value);
     }
     
     /**
-     * Sets the value of the WAT min threshold
+     * Sets the value of the BAT IS min threshold
      * @param value the value to set the slider to
      */
-    public void setWATMinSliderValue(double value) {
-        WATMinSlider.setValue(value);
+    public void setBATISMinSliderValue(double value) {
+        BATISMinSlider.setValue(value);
     }
     
     /**
-     * Sets the value of the WAT max threshold
+     * Sets the value of the BAT IS max threshold
      * @param value the value to set the slider to
      */
-    public void setWATMaxSliderValue(double value) {
-        WATMaxSlider.setValue(value);
+    public void setBATISMaxSliderValue(double value) {
+        BATISMaxSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the WAT SA min threshold
+     * @param value the value to set the slider to
+     */
+    public void setWATSAMinSliderValue(double value) {
+        WATSAMinSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the WAT SA max threshold
+     * @param value the value to set the slider to
+     */
+    public void setWATSAMaxSliderValue(double value) {
+        WATSAMaxSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the WAT IS min threshold
+     * @param value the value to set the slider to
+     */
+    public void setWATISMinSliderValue(double value) {
+        WATISMinSlider.setValue(value);
+    }
+    
+    /**
+     * Sets the value of the WAT IS max threshold
+     * @param value the value to set the slider to
+     */
+    public void setWATISMaxSliderValue(double value) {
+        WATISMaxSlider.setValue(value);
     }
     
     /**
@@ -583,34 +659,66 @@ public class FatFractionCalculatorView {
     
     /**
      * 
-     * @return the value of the BAT min threshold
+     * @return the value of the BAT SA min threshold
      */
-    public int getBATMinSliderValue() {
-        return (int) BATMinSlider.getValue();
+    public int getBATSAMinSliderValue() {
+        return (int) BATSAMinSlider.getValue();
     }
     
     /**
      * 
-     * @return the value of the BAT max threshold
+     * @return the value of the BAT SA max threshold
      */
-    public int getBATMaxSliderValue() {
-        return (int) BATMaxSlider.getValue();
+    public int getBATSAMaxSliderValue() {
+        return (int) BATSAMaxSlider.getValue();
     }
     
     /**
      * 
-     * @return the value of the WAT min threshold
+     * @return the value of the BAT IS min threshold
      */
-    public int getWATMinSliderValue() {
-        return (int) WATMinSlider.getValue();
+    public int getBATISMinSliderValue() {
+        return (int) BATISMinSlider.getValue();
     }
     
     /**
      * 
-     * @return the value of the WAT max threshold
+     * @return the value of the BAT IS max threshold
      */
-    public int getWATMaxSliderValue() {
-        return (int) WATMaxSlider.getValue();
+    public int getBATISMaxSliderValue() {
+        return (int) BATISMaxSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the WAT SA min threshold
+     */
+    public int getWATSAMinSliderValue() {
+        return (int) WATSAMinSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the WAT SA max threshold
+     */
+    public int getWATSAMaxSliderValue() {
+        return (int) WATSAMaxSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the WAT IS min threshold
+     */
+    public int getWATISMinSliderValue() {
+        return (int) WATISMinSlider.getValue();
+    }
+    
+    /**
+     * 
+     * @return the value of the WAT IS max threshold
+     */
+    public int getWATISMaxSliderValue() {
+        return (int) WATISMaxSlider.getValue();
     }
     
     /**
