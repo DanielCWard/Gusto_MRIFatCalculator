@@ -98,9 +98,9 @@ public class FatFractionCalculatorModel {
         TISBounds = new Bounds(0, 100);
         
         BATSAMaskValue = 1;
-        BATISMaskValue = 1;
+        BATISMaskValue = 2;
         WATSAMaskValue = 1;
-        WATISMaskValue = 1;
+        WATISMaskValue = 2;
         TSAMaskValue = 1;
         TISMaskValue = 2;
         reset();
